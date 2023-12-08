@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://chu2jv35s6y6k"]
+
+[ext_resource type="Script" path="res://match/square.gd" id="1_1sdoy"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yqnmm"]
+resource_local_to_scene = true
+transparency = 1
+shading_mode = 0
+albedo_color = Color(1, 1, 1, 0)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_hv4ns"]
+size = Vector2(1.1, 1.1)
+
+[node name="Square" type="Node3D"]
+script = ExtResource("1_1sdoy")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+material_override = SubResource("StandardMaterial3D_yqnmm")
+mesh = SubResource("PlaneMesh_hv4ns")

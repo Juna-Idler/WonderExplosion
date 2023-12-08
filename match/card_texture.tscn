@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://cd6qmuwn8r43s"]
+
+[ext_resource type="Script" path="res://match/card_texture.gd" id="1_wjvyp"]
+[ext_resource type="PackedScene" uid="uid://bmi7qw71mvsry" path="res://match/card_face.tscn" id="2_k8mph"]
+
+[node name="CardTexture" type="SubViewport"]
+render_target_update_mode = 1
+script = ExtResource("1_wjvyp")
+
+[node name="CardFace" parent="." instance=ExtResource("2_k8mph")]

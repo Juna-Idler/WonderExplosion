@@ -1,0 +1,45 @@
+[gd_scene load_steps=3 format=3 uid="uid://i5x8tswojjgu"]
+
+[ext_resource type="Script" path="res://match/leak.gd" id="1_bkcvr"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_mttol"]
+resource_local_to_scene = true
+font_size = 64
+outline_size = 20
+outline_color = Color(0.627451, 0, 0, 1)
+
+[node name="Leak" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 128.0
+offset_bottom = 128.0
+script = ExtResource("1_bkcvr")
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+position = Vector2(64, 64)
+color = Color(1, 0, 0, 1)
+offset = Vector2(-64, -64)
+polygon = PackedVector2Array(64, 12, 64, 116, 112, 64)
+
+[node name="Line2D" type="Line2D" parent="Polygon2D"]
+position = Vector2(-64, -64)
+points = PackedVector2Array(64, 64, 64, 116, 112, 64, 64, 12, 64, 64)
+width = 8.0
+default_color = Color(0.627451, 0, 0, 1)
+sharp_limit = 3.0
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "+1"
+label_settings = SubResource("LabelSettings_mttol")

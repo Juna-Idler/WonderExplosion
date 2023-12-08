@@ -1,0 +1,38 @@
+[gd_scene load_steps=4 format=3 uid="uid://bpfxbpggywtq0"]
+
+[ext_resource type="Script" path="res://match/field.gd" id="1_6cskv"]
+[ext_resource type="PackedScene" uid="uid://chu2jv35s6y6k" path="res://match/square.tscn" id="1_wbhjf"]
+[ext_resource type="PackedScene" uid="uid://2avi2fqe27tl" path="res://match/leak_effect.tscn" id="3_f00o0"]
+
+[node name="Field" type="Node3D"]
+script = ExtResource("1_6cskv")
+
+[node name="Square1" parent="." instance=ExtResource("1_wbhjf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1, 0.01, -1.1)
+
+[node name="Square2" parent="." instance=ExtResource("1_wbhjf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.01, -1.1)
+
+[node name="Square3" parent="." instance=ExtResource("1_wbhjf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.1, 0.01, -1.1)
+
+[node name="Square4" parent="." instance=ExtResource("1_wbhjf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1, 0.01, 0)
+
+[node name="Square5" parent="." instance=ExtResource("1_wbhjf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.01, 0)
+
+[node name="Square6" parent="." instance=ExtResource("1_wbhjf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.1, 0.01, 0)
+
+[node name="Square7" parent="." instance=ExtResource("1_wbhjf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1, 0.01, 1.1)
+
+[node name="Square8" parent="." instance=ExtResource("1_wbhjf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.01, 1.1)
+
+[node name="Square9" parent="." instance=ExtResource("1_wbhjf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.1, 0.01, 1.1)
+
+[node name="LeakEffect" parent="." instance=ExtResource("3_f00o0")]
+visible = false

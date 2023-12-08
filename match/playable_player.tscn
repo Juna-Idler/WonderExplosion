@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://c4cl0r2jd5frf"]
+
+[ext_resource type="PackedScene" uid="uid://06ja2k1os3h3" path="res://match/player.tscn" id="1_7wtac"]
+[ext_resource type="Script" path="res://match/playable_player.gd" id="2_nt4pq"]
+[ext_resource type="PackedScene" uid="uid://syoisll3q8na" path="res://match/curve_arrow.tscn" id="3_38gii"]
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_jq4sn"]
+
+[node name="PlayablePlayer" instance=ExtResource("1_7wtac")]
+script = ExtResource("2_nt4pq")
+
+[node name="DragPlane" type="Area3D" parent="." index="9"]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+input_ray_pickable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DragPlane" index="0"]
+shape = SubResource("WorldBoundaryShape3D_jq4sn")
+
+[node name="CurveArrow" parent="." index="10" instance=ExtResource("3_38gii")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
+visible = false
+
+[connection signal="input_event" from="DragPlane" to="." method="_on_drag_plane_input_event"]
+[connection signal="mouse_exited" from="DragPlane" to="." method="_on_drag_plane_mouse_exited"]

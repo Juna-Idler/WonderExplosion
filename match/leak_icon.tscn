@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=3 uid="uid://bmtcm2eg17ij4"]
+
+[ext_resource type="Script" path="res://match/leak_icon.gd" id="1_d0v21"]
+[ext_resource type="PackedScene" uid="uid://i5x8tswojjgu" path="res://match/leak.tscn" id="1_rhx8l"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_m11cc"]
+resource_local_to_scene = true
+transparency = 1
+shading_mode = 0
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_o2xld"]
+size = Vector2(0.5, 0.5)
+
+[node name="LeakIcon" type="MeshInstance3D"]
+material_override = SubResource("StandardMaterial3D_m11cc")
+mesh = SubResource("PlaneMesh_o2xld")
+script = ExtResource("1_d0v21")
+
+[node name="SubViewport" type="SubViewport" parent="."]
+transparent_bg = true
+size = Vector2i(128, 128)
+render_target_update_mode = 1
+
+[node name="Leak" parent="SubViewport" instance=ExtResource("1_rhx8l")]

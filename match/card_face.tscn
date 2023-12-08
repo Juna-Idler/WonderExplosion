@@ -1,0 +1,256 @@
+[gd_scene load_steps=7 format=3 uid="uid://bmi7qw71mvsry"]
+
+[ext_resource type="Script" path="res://match/card_face.gd" id="1_2tdc2"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_w5kr0"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_qjw38"]
+noise = SubResource("FastNoiseLite_w5kr0")
+
+[sub_resource type="LabelSettings" id="LabelSettings_gmlu3"]
+font_size = 70
+outline_size = 20
+outline_color = Color(0.823529, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_c617a"]
+font_size = 128
+font_color = Color(0, 0, 0, 1)
+outline_size = 15
+
+[sub_resource type="LabelSettings" id="LabelSettings_42lq7"]
+font_size = 80
+font_color = Color(0, 0, 0, 1)
+outline_size = 16
+shadow_size = 10
+shadow_color = Color(0, 0, 0, 0.768627)
+
+[node name="CardFace" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 512.0
+offset_bottom = 512.0
+script = ExtResource("1_2tdc2")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 0, 0, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="ColorRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="TextureRect" type="TextureRect" parent="ColorRect/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+texture = SubResource("NoiseTexture2D_qjw38")
+expand_mode = 1
+stretch_mode = 4
+
+[node name="Leaks" type="Control" parent="ColorRect/MarginContainer/TextureRect"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(240, 240)
+
+[node name="Label1" type="Label" parent="ColorRect/MarginContainer/TextureRect/Leaks"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_right = 107.0
+offset_bottom = 107.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "+0"
+label_settings = SubResource("LabelSettings_gmlu3")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="ColorRect/MarginContainer/TextureRect/Leaks"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_left = 187.0
+offset_right = 294.0
+offset_bottom = 107.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "+0"
+label_settings = SubResource("LabelSettings_gmlu3")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label3" type="Label" parent="ColorRect/MarginContainer/TextureRect/Leaks"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_left = 374.0
+offset_right = 480.0
+offset_bottom = 107.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "+0"
+label_settings = SubResource("LabelSettings_gmlu3")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label4" type="Label" parent="ColorRect/MarginContainer/TextureRect/Leaks"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_top = 187.0
+offset_right = 107.0
+offset_bottom = 294.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "+0"
+label_settings = SubResource("LabelSettings_gmlu3")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Blank" type="Label" parent="ColorRect/MarginContainer/TextureRect/Leaks"]
+layout_mode = 2
+offset_left = 187.0
+offset_top = 187.0
+offset_right = 294.0
+offset_bottom = 294.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label5" type="Label" parent="ColorRect/MarginContainer/TextureRect/Leaks"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_left = 374.0
+offset_top = 187.0
+offset_right = 480.0
+offset_bottom = 294.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "+0"
+label_settings = SubResource("LabelSettings_gmlu3")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label6" type="Label" parent="ColorRect/MarginContainer/TextureRect/Leaks"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_top = 374.0
+offset_right = 107.0
+offset_bottom = 480.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "+0"
+label_settings = SubResource("LabelSettings_gmlu3")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label7" type="Label" parent="ColorRect/MarginContainer/TextureRect/Leaks"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_left = 187.0
+offset_top = 374.0
+offset_right = 294.0
+offset_bottom = 480.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "+0"
+label_settings = SubResource("LabelSettings_gmlu3")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label8" type="Label" parent="ColorRect/MarginContainer/TextureRect/Leaks"]
+unique_name_in_owner = true
+layout_mode = 2
+offset_left = 374.0
+offset_top = 374.0
+offset_right = 480.0
+offset_bottom = 480.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "+0"
+label_settings = SubResource("LabelSettings_gmlu3")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Control" type="Control" parent="ColorRect/MarginContainer/TextureRect"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -152.0
+offset_top = -152.0
+offset_right = -24.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset = Vector2(64, 64)
+
+[node name="Line2D" type="Line2D" parent="ColorRect/MarginContainer/TextureRect/Control"]
+position = Vector2(64, 64)
+scale = Vector2(1.25, 1.25)
+points = PackedVector2Array(0, -64, 64, 0, 0, 64, -64, 0, 0, -64)
+width = 20.0
+begin_cap_mode = 1
+end_cap_mode = 1
+antialiased = true
+metadata/_edit_lock_ = true
+
+[node name="Line2D2" type="Line2D" parent="ColorRect/MarginContainer/TextureRect/Control/Line2D"]
+points = PackedVector2Array(0, -64, 64, 0, 0, 64, -64, 0, 0, -64)
+default_color = Color(0, 0, 0, 1)
+begin_cap_mode = 1
+end_cap_mode = 1
+antialiased = true
+metadata/_edit_lock_ = true
+
+[node name="LabelPower" type="Label" parent="ColorRect/MarginContainer/TextureRect/Control"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -16.5
+offset_top = -69.0
+offset_right = 16.5
+offset_bottom = 69.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "5"
+label_settings = SubResource("LabelSettings_c617a")
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_lock_ = true
+
+[node name="LabelSpell" type="Label" parent="ColorRect/MarginContainer/TextureRect"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -192.0
+offset_bottom = -96.0
+grow_horizontal = 2
+grow_vertical = 0
+pivot_offset = Vector2(240, 55)
+text = "呪文"
+label_settings = SubResource("LabelSettings_42lq7")
+horizontal_alignment = 1
+vertical_alignment = 2

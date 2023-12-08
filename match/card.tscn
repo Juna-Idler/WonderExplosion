@@ -1,0 +1,51 @@
+[gd_scene load_steps=9 format=3 uid="uid://doihe6s8ni0c7"]
+
+[ext_resource type="Script" path="res://match/card.gd" id="1_cesyu"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ybhtf"]
+size = Vector3(1, 0.01, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wpwwj"]
+resource_local_to_scene = true
+shading_mode = 0
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_1tp18"]
+size = Vector2(1, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_ropx7"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_t7vl5"]
+noise = SubResource("FastNoiseLite_ropx7")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fnkq8"]
+resource_local_to_scene = true
+shading_mode = 0
+albedo_texture = SubResource("NoiseTexture2D_t7vl5")
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_mt68h"]
+flip_faces = true
+size = Vector2(1, 1)
+
+[node name="Card" type="Area3D"]
+script = ExtResource("1_cesyu")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_ybhtf")
+
+[node name="FrontSide" type="MeshInstance3D" parent="."]
+material_override = SubResource("StandardMaterial3D_wpwwj")
+mesh = SubResource("PlaneMesh_1tp18")
+skeleton = NodePath("")
+
+[node name="BackSide" type="MeshInstance3D" parent="."]
+material_override = SubResource("StandardMaterial3D_fnkq8")
+mesh = SubResource("PlaneMesh_mt68h")
+skeleton = NodePath("")
+
+[node name="Label3D" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.1, 0)
+double_sided = false
+render_priority = 1
+text = "9"
+font_size = 100
+outline_size = 20

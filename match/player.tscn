@@ -1,0 +1,49 @@
+[gd_scene load_steps=5 format=3 uid="uid://06ja2k1os3h3"]
+
+[ext_resource type="Script" path="res://match/player.gd" id="1_jhdos"]
+[ext_resource type="PackedScene" uid="uid://doihe6s8ni0c7" path="res://match/card.tscn" id="2_qp60k"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_r11b5"]
+size = Vector2(4, 1.1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_in685"]
+size = Vector2(1.1, 1.1)
+
+[node name="Player" type="Node3D"]
+script = ExtResource("1_jhdos")
+
+[node name="HandArea" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.25)
+mesh = SubResource("PlaneMesh_r11b5")
+
+[node name="StockArea" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.75, 0, 2.25)
+mesh = SubResource("PlaneMesh_in685")
+
+[node name="DiscardArea" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.75, 0, 1)
+mesh = SubResource("PlaneMesh_in685")
+
+[node name="Card1" parent="." instance=ExtResource("2_qp60k")]
+transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, 0, 1, 2.75, 0.01, 2.25)
+
+[node name="Card2" parent="." instance=ExtResource("2_qp60k")]
+transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, 0, 1, 2.75, 0.01, 2.25)
+
+[node name="Card3" parent="." instance=ExtResource("2_qp60k")]
+transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, 0, 1, 2.75, 0.01, 2.25)
+
+[node name="Card4" parent="." instance=ExtResource("2_qp60k")]
+transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, 0, 1, 2.75, 0.01, 2.25)
+
+[node name="Card5" parent="." instance=ExtResource("2_qp60k")]
+transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, 0, 1, 2.75, 0.01, 2.25)
+
+[node name="Card6" parent="." instance=ExtResource("2_qp60k")]
+transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, 0, 1, 2.75, 0.01, 2.25)
+
+[node name="BattlePoint" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.75, 1, 0)
+
+[node name="RaisedPoint" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1.25)

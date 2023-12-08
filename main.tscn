@@ -1,0 +1,64 @@
+[gd_scene load_steps=5 format=3 uid="uid://ce5b5klmdhdr4"]
+
+[ext_resource type="Script" path="res://main.gd" id="1_27b52"]
+[ext_resource type="PackedScene" uid="uid://deuihfhsutpe0" path="res://match/match.tscn" id="2_khl68"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qbpmg"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_5g6kh"]
+font_size = 80
+outline_size = 20
+outline_color = Color(0, 0, 0, 1)
+
+[node name="Main" type="Node"]
+script = ExtResource("1_27b52")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 10
+
+[node name="Panel" type="Panel" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_qbpmg")
+
+[node name="Label" type="Label" parent="CanvasLayer/Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -320.0
+offset_top = -168.0
+offset_right = 320.0
+offset_bottom = -40.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "EXPLOSION"
+label_settings = SubResource("LabelSettings_5g6kh")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="CanvasLayer/Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -160.0
+offset_top = 152.0
+offset_right = 192.0
+offset_bottom = 248.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 64
+text = "START"
+
+[node name="Match" parent="." instance=ExtResource("2_khl68")]
+
+[connection signal="pressed" from="CanvasLayer/Panel/Button" to="." method="_on_button_pressed"]
+[connection signal="requested_return" from="Match" to="." method="_on_match_requested_return"]
