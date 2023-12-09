@@ -4,10 +4,13 @@ class_name Mechanics
 
 class CardData:
 	var id : int
-	var spell : String
 	var power : int
 	var leaks : PackedInt32Array
 
+	func _init(i : int,p : int,l : PackedInt32Array):
+		id = i
+		power = p
+		leaks = l
 
 class Player:
 	var deck : Array[CardData]

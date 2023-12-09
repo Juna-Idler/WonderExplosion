@@ -14,11 +14,16 @@ var cpu_draw_replay := -1
 func _init():
 	pass
 
+func card_data_translate(id : int) -> Mechanics.CardData:
+	var data := Global.card_list.get_card_data(id)
+	var card_data := Mechanics.CardData.new(data.id,data.power,data.arrows)
+	return card_data
+
 func initialize(my_card_list : Array[int],cpu_card_list : Array[int]) -> bool:
 	var my_deck : Array[Mechanics.CardData] = []
-	my_deck.assign(my_card_list.map(func(v):return Global.card_list.get_card_data(v))) 
+	my_deck.assign(my_card_list.map(card_data_translate)) 
 	var cpu_deck : Array[Mechanics.CardData] = []
-	cpu_deck.assign(cpu_card_list.map(func(v):return Global.card_list.get_card_data(v))) 
+	cpu_deck.assign(cpu_card_list.map(card_data_translate)) 
 	
 	first_data.my_deck = my_card_list
 	first_data.rival_deck_count = cpu_card_list.size()

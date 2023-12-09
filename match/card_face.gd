@@ -22,7 +22,6 @@ func initialize(card_data : Mechanics.CardData,color : Color,texture : Texture2D
 		#if opponent:
 			#leak_labels[i].rotation = PI
 	%ColorRect.color = color
-	%LabelSpell.text = card_data.spell
 	if texture:
 		%TextureRect.texture = texture
 

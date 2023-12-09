@@ -1,5 +1,7 @@
 extends SubViewport
 
+class_name CardTexture
+
 var data : Mechanics.CardData
 
 @onready var card_face = $CardFace

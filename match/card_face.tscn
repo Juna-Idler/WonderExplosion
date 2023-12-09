@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://bmi7qw71mvsry"]
+[gd_scene load_steps=6 format=3 uid="uid://bmi7qw71mvsry"]
 
 [ext_resource type="Script" path="res://match/card_face.gd" id="1_2tdc2"]
 
@@ -16,13 +16,6 @@ outline_color = Color(0.823529, 0, 0, 1)
 font_size = 128
 font_color = Color(0, 0, 0, 1)
 outline_size = 15
-
-[sub_resource type="LabelSettings" id="LabelSettings_42lq7"]
-font_size = 80
-font_color = Color(0, 0, 0, 1)
-outline_size = 16
-shadow_size = 10
-shadow_color = Color(0, 0, 0, 0.768627)
 
 [node name="CardFace" type="Control"]
 layout_mode = 3
@@ -237,20 +230,3 @@ label_settings = SubResource("LabelSettings_c617a")
 horizontal_alignment = 1
 vertical_alignment = 1
 metadata/_edit_lock_ = true
-
-[node name="LabelSpell" type="Label" parent="ColorRect/MarginContainer/TextureRect"]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -192.0
-offset_bottom = -96.0
-grow_horizontal = 2
-grow_vertical = 0
-pivot_offset = Vector2(240, 55)
-text = "呪文"
-label_settings = SubResource("LabelSettings_42lq7")
-horizontal_alignment = 1
-vertical_alignment = 2
