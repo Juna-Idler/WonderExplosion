@@ -3,12 +3,18 @@ class_name IGameServer
 
 
 class FirstData:
+	var my_name : String
+	var rival_name : String
+	
 	var my_deck : Array[int] # card id
 	var my_hand : Array[int] # deck index
 
 	var rival_deck_count : int #デッキの総数(通常6)
 	var rival_hand_count : int #手札の数(通常3)
-	
+
+	var my_colors : Array[Color]
+	var rival_colors : Array[Color]
+
 	#先攻(1)か後攻(2)か
 	var player_number : int
 

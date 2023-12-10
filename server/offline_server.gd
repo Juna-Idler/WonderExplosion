@@ -19,7 +19,12 @@ func card_data_translate(id : int) -> Mechanics.CardData:
 	var card_data := Mechanics.CardData.new(data.id,data.power,data.arrows)
 	return card_data
 
-func initialize(my_card_list : Array[int],cpu_card_list : Array[int]) -> bool:
+func initialize(my_name : String,my_card_list : Array[int],cpu_card_list : Array[int],my_colors : Array[Color],cpu_colors : Array[Color]) -> bool:
+	first_data.my_name = my_name
+	first_data.rival_name = "random cpu"
+	first_data.my_colors = my_colors
+	first_data.rival_colors = cpu_colors
+
 	var my_deck : Array[Mechanics.CardData] = []
 	my_deck.assign(my_card_list.map(card_data_translate)) 
 	var cpu_deck : Array[Mechanics.CardData] = []

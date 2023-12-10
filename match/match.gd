@@ -31,18 +31,22 @@ var game_end := false
 
 
 
-func initialize():
+func initialize(server : IGameServer):
 	%ResultMessage.hide()
 	%ReturnButton.hide()
 	
-	var offline_server := OfflineServer.new()
-	offline_server.initialize([1,2,3,4,5,6],[1,2,3,4,5,6])
-	game_server = offline_server
+	game_server = server
+	
 
 	var first_data := await game_server._send_ready_async()
 	
-	client_player.initialize("",first_data.my_deck,Color.BLUE,rival)
-	rival.initialize_unknown("",Color.RED,client_player,true)
+	var my_color := first_data.my_colors[0]
+	var rival_color := first_data.rival_colors[0]
+	
+	client_player.initialize(first_data.my_name,first_data.my_deck,my_color,rival)
+	rival.initialize_unknown(first_data.rival_name,rival_color,client_player,true)
+
+	conflict_effect.set_color(my_color,rival_color)
 	
 	client_player.life_changed.connect(func(life):
 		my_hp.text = "HP:" + str(life)
@@ -50,7 +54,6 @@ func initialize():
 	rival.life_changed.connect(func(life):
 		rival_hp.text = "HP:" + str(life)
 	)
-	
 	
 	player_number = first_data.player_number
 	field.set_front_side_player(client_player,player_number == 1)

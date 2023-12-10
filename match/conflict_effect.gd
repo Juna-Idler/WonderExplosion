@@ -8,6 +8,10 @@ const RESULT_TIME := 1.0
 @onready var rival_force = $RivalForce
 @onready var draw = $Draw
 
+func set_color(my_color : Color,rival_color : Color):
+	my_force.mesh.material.albedo_color = my_color
+	rival_force.mesh.material.albedo_color = rival_color
+
 
 func play_win():
 	my_force.mesh.center_offset.z = 10.0

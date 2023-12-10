@@ -2,7 +2,7 @@ extends Area3D
 
 class_name Card
 
-var data : Mechanics.CardData = null
+var data : CardList.CardData = null
 
 var tween : Tween
 
@@ -25,7 +25,7 @@ func initialize(color : Color,opponent : bool):
 	if opponent:
 		label_3d.rotation.y = -PI
 
-func set_open_data(card_data : Mechanics.CardData,texture : Texture2D):
+func set_open_data(card_data : CardList.CardData,texture : Texture2D):
 	data = card_data
 	var material := $FrontSide.material_override as StandardMaterial3D
 	material.albedo_texture = texture

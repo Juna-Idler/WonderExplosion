@@ -1,7 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://ce5b5klmdhdr4"]
+[gd_scene load_steps=7 format=3 uid="uid://ce5b5klmdhdr4"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_27b52"]
+[ext_resource type="PackedScene" uid="uid://dv8kqsra7qku1" path="res://card/deck_set_label.tscn" id="2_3d5r5"]
 [ext_resource type="PackedScene" uid="uid://deuihfhsutpe0" path="res://match/match.tscn" id="2_khl68"]
+[ext_resource type="PackedScene" uid="uid://dodisf11p0r2g" path="res://build/build.tscn" id="3_5m2bk"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qbpmg"]
 
@@ -13,10 +15,10 @@ outline_color = Color(0, 0, 0, 1)
 [node name="Main" type="Node"]
 script = ExtResource("1_27b52")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="TitleLayer" type="CanvasLayer" parent="."]
 layer = 10
 
-[node name="Panel" type="Panel" parent="CanvasLayer"]
+[node name="Panel" type="Panel" parent="TitleLayer"]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -24,7 +26,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_qbpmg")
 
-[node name="Label" type="Label" parent="CanvasLayer/Panel"]
+[node name="Label" type="Label" parent="TitleLayer/Panel"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -32,9 +34,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -448.0
-offset_top = -168.0
+offset_top = -232.0
 offset_right = 448.0
-offset_bottom = -40.0
+offset_bottom = -104.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "WONDER EXPLOSION"
@@ -42,23 +44,67 @@ label_settings = SubResource("LabelSettings_5g6kh")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Button" type="Button" parent="CanvasLayer/Panel"]
+[node name="Button" type="Button" parent="TitleLayer/Panel"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -160.0
+offset_left = -176.0
 offset_top = 152.0
-offset_right = 192.0
+offset_right = 176.0
 offset_bottom = 248.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/font_size = 64
 text = "START"
 
+[node name="Deck" type="Control" parent="TitleLayer/Panel"]
+anchors_preset = 0
+offset_left = 488.0
+offset_top = 272.0
+offset_right = 792.0
+offset_bottom = 480.0
+
+[node name="DeckSetLabel" parent="TitleLayer/Panel/Deck" instance=ExtResource("2_3d5r5")]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -149.0
+offset_top = -100.0
+offset_right = 149.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_lock_ = true
+
+[node name="BuildButton" type="Button" parent="TitleLayer/Panel/Deck"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+flat = true
+metadata/_edit_lock_ = true
+
 [node name="Match" parent="." instance=ExtResource("2_khl68")]
 
-[connection signal="pressed" from="CanvasLayer/Panel/Button" to="." method="_on_button_pressed"]
+[node name="BuildLayer" type="CanvasLayer" parent="."]
+layer = 10
+visible = false
+
+[node name="Build" parent="BuildLayer" instance=ExtResource("3_5m2bk")]
+unique_name_in_owner = true
+
+[connection signal="pressed" from="TitleLayer/Panel/Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="TitleLayer/Panel/Deck/BuildButton" to="." method="_on_build_button_pressed"]
 [connection signal="requested_return" from="Match" to="." method="_on_match_requested_return"]
+[connection signal="back_button_pressed" from="BuildLayer/Build" to="." method="_on_build_back_button_pressed"]
+[connection signal="request_save" from="BuildLayer/Build" to="." method="_on_build_request_save"]

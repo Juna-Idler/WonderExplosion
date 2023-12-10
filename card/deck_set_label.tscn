@@ -1,0 +1,96 @@
+[gd_scene load_steps=7 format=3 uid="uid://dv8kqsra7qku1"]
+
+[ext_resource type="Script" path="res://card/deck_set_label.gd" id="1_37d6c"]
+[ext_resource type="PackedScene" uid="uid://bmi7qw71mvsry" path="res://card/card_face.tscn" id="1_uma2h"]
+[ext_resource type="FontFile" uid="uid://djqpighd30oc5" path="res://font/PixelMplus12-Regular.ttf" id="2_40u0y"]
+
+[sub_resource type="Gradient" id="Gradient_m5dxg"]
+resource_local_to_scene = true
+offsets = PackedFloat32Array(0.4, 0.6)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ber1i"]
+resource_local_to_scene = true
+gradient = SubResource("Gradient_m5dxg")
+width = 48
+height = 32
+fill_to = Vector2(1, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_7bqas"]
+font = ExtResource("2_40u0y")
+font_size = 40
+outline_size = 16
+outline_color = Color(0, 0, 0, 1)
+
+[node name="DeckSetLabel" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 298.0
+offset_bottom = 200.0
+script = ExtResource("1_37d6c")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_ber1i")
+
+[node name="CardFace1" parent="." instance=ExtResource("1_uma2h")]
+layout_mode = 2
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 520.0
+offset_bottom = 520.0
+scale = Vector2(0.171, 0.171)
+
+[node name="CardFace2" parent="." instance=ExtResource("1_uma2h")]
+layout_mode = 2
+offset_left = 104.0
+offset_top = 8.0
+offset_right = 616.0
+offset_bottom = 520.0
+scale = Vector2(0.171, 0.171)
+
+[node name="CardFace3" parent="." instance=ExtResource("1_uma2h")]
+layout_mode = 2
+offset_left = 200.0
+offset_top = 8.0
+offset_right = 712.0
+offset_bottom = 520.0
+scale = Vector2(0.171, 0.171)
+
+[node name="CardFace4" parent="." instance=ExtResource("1_uma2h")]
+layout_mode = 2
+offset_left = 8.0
+offset_top = 104.0
+offset_right = 520.0
+offset_bottom = 616.0
+scale = Vector2(0.171, 0.171)
+
+[node name="CardFace5" parent="." instance=ExtResource("1_uma2h")]
+layout_mode = 2
+offset_left = 104.0
+offset_top = 104.0
+offset_right = 616.0
+offset_bottom = 616.0
+scale = Vector2(0.171, 0.171)
+
+[node name="CardFace6" parent="." instance=ExtResource("1_uma2h")]
+layout_mode = 1
+offset_left = 200.0
+offset_top = 104.0
+offset_right = 712.0
+offset_bottom = 616.0
+scale = Vector2(0.171, 0.171)
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_top = 80.0
+offset_right = 296.0
+offset_bottom = 124.0
+text = "DeckName"
+label_settings = SubResource("LabelSettings_7bqas")
+horizontal_alignment = 1
+vertical_alignment = 1

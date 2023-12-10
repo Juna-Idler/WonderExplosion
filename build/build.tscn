@@ -1,6 +1,10 @@
-[gd_scene load_steps=2 format=3 uid="uid://dodisf11p0r2g"]
+[gd_scene load_steps=4 format=3 uid="uid://dodisf11p0r2g"]
 
 [ext_resource type="Script" path="res://build/build.gd" id="1_xo1ub"]
+[ext_resource type="FontFile" uid="uid://djqpighd30oc5" path="res://font/PixelMplus12-Regular.ttf" id="2_tda1v"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jp8n0"]
+bg_color = Color(0.223529, 0.223529, 0.223529, 1)
 
 [node name="Build" type="Panel"]
 anchors_preset = 15
@@ -8,41 +12,77 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_jp8n0")
 script = ExtResource("1_xo1ub")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 16.0
-offset_top = 72.0
-offset_right = -16.0
-offset_bottom = -15.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
 
-[node name="ItemList" type="ItemList" parent="HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Header" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 32
+
+[node name="BackButton" type="Button" parent="MarginContainer/VBoxContainer/Header"]
+custom_minimum_size = Vector2(128, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "BACK"
+
+[node name="DeckName" type="LineEdit" parent="MarginContainer/VBoxContainer/Header"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 40
+theme_override_fonts/font = ExtResource("2_tda1v")
+theme_override_font_sizes/font_size = 24
+text = "DECK_NAME"
+alignment = 1
+
+[node name="SaveButton" type="Button" parent="MarginContainer/VBoxContainer/Header"]
+custom_minimum_size = Vector2(128, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "SAVE"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ItemList" type="ItemList" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_tda1v")
+theme_override_font_sizes/font_size = 24
 text_overrun_behavior = 0
 
-[node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 6
 horizontal_scroll_mode = 0
 vertical_scroll_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/ScrollContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/ScrollContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 4
 theme_override_constants/margin_top = 4
 theme_override_constants/margin_right = 4
 theme_override_constants/margin_bottom = 4
 
-[node name="PackList" type="GridContainer" parent="HBoxContainer/ScrollContainer/MarginContainer"]
+[node name="PackList" type="GridContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/ScrollContainer/MarginContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(440, 440)
 layout_mode = 2
@@ -52,15 +92,15 @@ theme_override_constants/h_separation = 4
 theme_override_constants/v_separation = 4
 columns = 3
 
-[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_left = 8
 theme_override_constants/margin_right = 8
 
-[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer"]
 layout_mode = 2
 
-[node name="DeckList" type="GridContainer" parent="HBoxContainer/MarginContainer/VBoxContainer"]
+[node name="DeckList" type="GridContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(296, 448)
 layout_mode = 2
@@ -69,30 +109,21 @@ theme_override_constants/h_separation = 8
 theme_override_constants/v_separation = 8
 columns = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="PrimaryColor" type="ColorPickerButton" parent="HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="PrimaryColor" type="ColorPickerButton" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 color = Color(0, 0, 1, 1)
 
-[node name="SecondaryColor" type="ColorPickerButton" parent="HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="SecondaryColor" type="ColorPickerButton" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 color = Color(1, 0, 0, 1)
-
-[node name="Button" type="Button" parent="."]
-layout_mode = 0
-offset_left = 8.0
-offset_top = 8.0
-offset_right = 184.0
-offset_bottom = 56.0
-theme_override_font_sizes/font_size = 24
-text = "BACK"
 
 [node name="Mover" type="TextureRect" parent="."]
 unique_name_in_owner = true
@@ -103,4 +134,6 @@ offset_bottom = 144.0
 expand_mode = 2
 stretch_mode = 4
 
-[connection signal="item_selected" from="HBoxContainer/ItemList" to="." method="_on_item_list_item_selected"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Header/BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/Header/SaveButton" to="." method="_on_save_button_pressed"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/HBoxContainer/ItemList" to="." method="_on_item_list_item_selected"]

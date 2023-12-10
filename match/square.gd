@@ -20,8 +20,8 @@ func get_leak(direction : int,player_side : NonPlayablePlayer) -> int:
 		return 0
 	
 	if player == player_side:
-		return card.data.leaks[direction]
+		return card.data.arrows[direction]
 	else:
-		return card.data.leaks[(direction + 4) % 8]
+		return card.data.arrows[(direction + 4) % 8]
 	
 

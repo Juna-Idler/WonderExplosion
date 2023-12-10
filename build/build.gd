@@ -1,7 +1,10 @@
 extends Panel
 
+signal back_button_pressed
+signal request_save(deck : Deck)
+
 const DRAGGABLE_ITEM = preload("res://build/draggable_item.tscn")
-const CARD_TEXTURE = preload("res://match/card_texture.tscn")
+const CARD_TEXTURE = preload("res://card/card_texture.tscn")
 
 @onready var item_list : ItemList = %ItemList
 
@@ -13,12 +16,14 @@ var pack_select_list : Dictionary = {}
 @onready var deck_list : GridContainer = %DeckList
 
 @onready var mover : TextureRect = %Mover
+@onready var deck_name = %DeckName
+
+@onready var primary_color = %PrimaryColor
+@onready var secondary_color = %SecondaryColor
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	var deck := Deck.new("no name",[1,2,3,4,5,6],Color.BLUE,Color.RED)
-	initialize(deck)
 	pass # Replace with function body.
 
 
@@ -37,17 +42,22 @@ func initialize(deck : Deck):
 	item_list.select(1)
 	initialize_pack_card_list(1)
 
+	for c in deck_list.get_children():
+		deck_list.remove_child(c)
+		c.queue_free()
 	for d in deck.cards:
 		deck_list.add_child(create_draggable_item(d))
+
+	primary_color.color = deck.primary_color
+	secondary_color.color = deck.secondary_color
 
 
 func get_texture(id : int):
 	if not card_textures.has(id):
 		var data := Global.card_list.get_card_data(id)
-		var card_data := Mechanics.CardData.new(data.id,data.power,data.arrows)
 		var texture := CARD_TEXTURE.instantiate()
 		add_child(texture)
-		texture.initialize(card_data,Color.WHITE,null,false)
+		texture.initialize(data,Color.WHITE,null,false)
 		card_textures[id] = texture.get_texture()
 	return card_textures[id]
 
@@ -126,4 +136,21 @@ func on_dropped(_self : Control,_relative_pos : Vector2,_start_pos : Vector2):
 	mover.hide()
 	_self.modulate.a = 1.0
 	pass
+
+
+
+func _on_back_button_pressed():
+	back_button_pressed.emit()
+
+
+func _on_save_button_pressed():
+	if deck_list.get_child_count() != 6:
+		return
+	var cards : Array[int] = []
+	for c in deck_list.get_children():
+		cards.append(c.get_meta("card_id"))
+	var p_color : Color = primary_color.color
+	var s_color : Color = secondary_color.color
+	var deck := Deck.new(deck_name.text,cards,p_color,s_color)
+	request_save.emit(deck)
 

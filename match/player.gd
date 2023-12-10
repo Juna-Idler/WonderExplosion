@@ -4,7 +4,7 @@ class_name NonPlayablePlayer
 
 signal life_changed(life : int)
 
-const CardTexture = preload("res://match/card_texture.tscn")
+const CardTexture = preload("res://card/card_texture.tscn")
 
 const HANDAREA_SIZE := Vector2(4.0,1.1)
 const CARD_WIDTH := 1.0
@@ -192,12 +192,11 @@ func _open_card_async(card : Card,card_id : int):
 
 func _set_card_texture(card : Card,card_id : int):
 	var data := Global.card_list.get_card_data(card_id)
-	var card_data := Mechanics.CardData.new(data.id,data.power,data.arrows)
 	if not card_textures.has(card_id):
 		var ct := CardTexture.instantiate()
 		add_child(ct)
-		ct.initialize(card_data,player_color,null,opponent_layout)
+		ct.initialize(data,player_color,null,opponent_layout)
 		card_textures[card_id] = ct
-	card.set_open_data(card_data,card_textures.get(card_id).get_texture())
+	card.set_open_data(data,card_textures.get(card_id).get_texture())
 
 
