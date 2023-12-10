@@ -14,7 +14,7 @@ var offline_server := OfflineServer.new()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	player_deck = Deck.new("Default",[1,2,3,4,5,6],Color.BLUE,Color.RED)
+	player_deck = Deck.new("Default Deck",[1,2,3,4,5,6],Color.BLUE,Color.RED)
 	deck_set_label.initialize(player_deck)
 	match_scene.set_process(false)
 	build.set_process(false)
@@ -22,7 +22,7 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 	pass
 
 

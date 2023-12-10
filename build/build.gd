@@ -21,6 +21,12 @@ var pack_select_list : Dictionary = {}
 @onready var primary_color = %PrimaryColor
 @onready var secondary_color = %SecondaryColor
 
+@onready var deck_power = %DeckPower
+const DECK_POWER_TEXT := "DECK (%d)"
+var deck_power_point : int = 0
+
+@onready var save_button = %SaveButton
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -34,6 +40,7 @@ func _process(_delta):
 func initialize(deck : Deck):
 	var card_list := Global.card_list.card_list.duplicate()
 	card_list.pop_front()
+	item_list.clear()
 	var index := item_list.add_item("ALL")
 	pack_select_list[index] = PackedInt32Array(card_list.map(func(v:CardList.CardData):return v.id))
 	for p in Global.card_list.pack_list:
@@ -45,11 +52,16 @@ func initialize(deck : Deck):
 	for c in deck_list.get_children():
 		deck_list.remove_child(c)
 		c.queue_free()
+	deck_power_point = 0
 	for d in deck.cards:
 		deck_list.add_child(create_draggable_item(d))
+		deck_power_point += Global.card_list.get_card_data(d).power
+	deck_power.text = DECK_POWER_TEXT % deck_power_point
 
 	primary_color.color = deck.primary_color
 	secondary_color.color = deck.secondary_color
+
+	save_button.disabled = false
 
 
 func get_texture(id : int):
@@ -119,23 +131,30 @@ func on_dropped(_self : Control,_relative_pos : Vector2,_start_pos : Vector2):
 			var move := clampi(x + y * 2,0,deck_list.get_child_count())
 			deck_list.move_child(_self,move)
 		else:
+			var id : int = _self.get_meta("card_id")
+			deck_power_point -= Global.card_list.get_card_data(id).power
+			deck_power.text = DECK_POWER_TEXT % deck_power_point
 			deck_list.remove_child(_self)
 			_self.queue_free()
-		pass
 	else:
 		if rect.has_point(point):
 			if deck_list.get_child_count() < 6:
-				var item := create_draggable_item(_self.get_meta("card_id"))
+				var id : int = _self.get_meta("card_id")
+				var item := create_draggable_item(id)
 				deck_list.add_child(item)
 				var x := floori((point.x - rect.position.x) / (rect.size.x / 2))
 				var y := floori((point.y - rect.position.y) / (rect.size.y / 3))
 				var move := clampi(x + y * 2,0,deck_list.get_child_count())
 				deck_list.move_child(item,move)
-				
-		pass
+				deck_power_point += Global.card_list.get_card_data(id).power
+				deck_power.text = DECK_POWER_TEXT % deck_power_point
 	mover.hide()
 	_self.modulate.a = 1.0
-	pass
+	
+	if deck_list.get_child_count() != 6 or deck_power_point < 15:
+		save_button.disabled = true
+	else:
+		save_button.disabled = false
 
 
 
@@ -144,8 +163,9 @@ func _on_back_button_pressed():
 
 
 func _on_save_button_pressed():
-	if deck_list.get_child_count() != 6:
+	if deck_list.get_child_count() != 6 or deck_power_point < 15:
 		return
+	
 	var cards : Array[int] = []
 	for c in deck_list.get_children():
 		cards.append(c.get_meta("card_id"))
