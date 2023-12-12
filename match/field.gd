@@ -21,11 +21,13 @@ var reverse : bool = false
 
 var front_side_player : NonPlayablePlayer
 
-func set_front_side_player(player : NonPlayablePlayer,first : bool):
+func initialize(player : NonPlayablePlayer,first : bool):
 	front_side_player = player
 	if reverse != not first:
 		reverse = not first
 		squares.reverse()
+	for s in squares:
+		s.initialize()
 
 func get_square(index : int) -> FieldSquare:
 	return squares[index]

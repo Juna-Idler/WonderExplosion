@@ -58,3 +58,7 @@ func _on_build_request_save(deck):
 	player_deck = deck
 	deck_set_label.initialize(deck)
 
+
+
+func _on_online_button_pressed():
+	get_tree().change_scene_to_file("res://online/main.tscn")

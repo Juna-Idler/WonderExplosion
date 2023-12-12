@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://c13mlejpunobd"]
+
+[ext_resource type="Script" path="res://test_server/main.gd" id="1_2i2bp"]
+[ext_resource type="Script" path="res://utility_code/websocket_server.gd" id="2_jldl8"]
+
+[node name="TestServer" type="Node"]
+script = ExtResource("1_2i2bp")
+
+[node name="WebsocketServer" type="Node" parent="."]
+script = ExtResource("2_jldl8")
+
+[connection signal="connected" from="WebsocketServer" to="." method="_on_websocket_server_connected"]
+[connection signal="disconnected" from="WebsocketServer" to="." method="_on_websocket_server_disconnected"]
+[connection signal="received" from="WebsocketServer" to="." method="_on_websocket_server_received"]

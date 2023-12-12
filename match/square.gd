@@ -10,6 +10,10 @@ var secret : bool = true
 func _ready():
 	pass # Replace with function body.
 
+func initialize():
+	card = null
+	player = null
+	secret = true
 
 func set_color(color : Color):
 	var materila := $MeshInstance3D.material_override as StandardMaterial3D

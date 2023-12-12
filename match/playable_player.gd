@@ -6,7 +6,7 @@ signal selecting(position : Vector3)
 signal decided(position : Vector3)
 
 
-var playable : bool = true
+var playable : bool = false
 var open_play : bool = false
 
 
@@ -26,6 +26,7 @@ var _bounce_card : Card = null
 
 
 func initialize(p_name : String,deck : Array[int],color : Color,rival : NonPlayablePlayer):
+	playable = false
 	super.initialize_unknown(p_name,color,rival,false)
 	for i in deck.size():
 		super._set_card_texture(cards[i],deck[i])

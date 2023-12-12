@@ -32,6 +32,16 @@ class Player:
 			hand.push_back(c)
 		number = num
 
+	func create_first_data() -> IGameServer.FirstData:
+		var data := IGameServer.FirstData.new()
+		data.my_deck.assign(deck.map(func(v : Mechanics.CardData):return v.id))
+		data.my_hand = hand.duplicate()
+		data.rival_deck_count = rival.deck.size()
+		data.rival_hand_count = rival.hand.size()
+		data.player_number = number
+		return data
+
+
 class Square:
 	var owner : Player = null
 	var deck_index : int = -1

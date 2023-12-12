@@ -19,6 +19,7 @@ func _ready():
 	tween.kill()
 
 func initialize(color : Color,opponent : bool):
+	data = null
 	var material := $BackSide.material_override as StandardMaterial3D
 	material.albedo_color = color
 	label_3d.hide()

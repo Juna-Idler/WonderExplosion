@@ -1,0 +1,88 @@
+[gd_scene load_steps=8 format=3 uid="uid://dqrvob6uwynxh"]
+
+[ext_resource type="Script" path="res://online/main.gd" id="1_5378r"]
+[ext_resource type="PackedScene" uid="uid://dv8kqsra7qku1" path="res://card/deck_set_label.tscn" id="2_qddhw"]
+[ext_resource type="PackedScene" uid="uid://dodisf11p0r2g" path="res://build/build.tscn" id="3_y1w7f"]
+[ext_resource type="PackedScene" uid="uid://deuihfhsutpe0" path="res://match/match.tscn" id="4_tffcy"]
+[ext_resource type="Script" path="res://utility_code/websocket_client.gd" id="5_rsftg"]
+
+[sub_resource type="Theme" id="Theme_qh5on"]
+default_font_size = 24
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tk882"]
+
+[node name="Main" type="Node"]
+script = ExtResource("1_5378r")
+
+[node name="MenuLayer" type="CanvasLayer" parent="."]
+layer = 10
+
+[node name="Panel" type="Panel" parent="MenuLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_qh5on")
+theme_override_styles/panel = SubResource("StyleBoxFlat_tk882")
+
+[node name="BackButton" type="Button" parent="MenuLayer/Panel"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 200.0
+offset_bottom = 72.0
+text = "BACK"
+
+[node name="MatchButton" type="Button" parent="MenuLayer/Panel"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 512.0
+offset_top = 576.0
+offset_right = 768.0
+offset_bottom = 640.0
+text = "Match"
+
+[node name="DeckSetLabel" parent="MenuLayer/Panel" instance=ExtResource("2_qddhw")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -149.0
+offset_top = -100.0
+offset_right = 149.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="DeckButton" type="Button" parent="MenuLayer/Panel/DeckSetLabel"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+flat = true
+
+[node name="BuildLayer" type="CanvasLayer" parent="."]
+layer = 10
+visible = false
+
+[node name="Build" parent="BuildLayer" instance=ExtResource("3_y1w7f")]
+unique_name_in_owner = true
+
+[node name="Match" parent="." instance=ExtResource("4_tffcy")]
+
+[node name="WebsocketClient" type="Node" parent="."]
+script = ExtResource("5_rsftg")
+
+[connection signal="pressed" from="MenuLayer/Panel/BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="MenuLayer/Panel/MatchButton" to="." method="_on_match_button_pressed"]
+[connection signal="pressed" from="MenuLayer/Panel/DeckSetLabel/DeckButton" to="." method="_on_deck_button_pressed"]
+[connection signal="back_button_pressed" from="BuildLayer/Build" to="." method="_on_build_back_button_pressed"]
+[connection signal="request_save" from="BuildLayer/Build" to="." method="_on_build_request_save"]
+[connection signal="requested_return" from="Match" to="." method="_on_match_requested_return"]

@@ -1,4 +1,4 @@
-extends "res://draggable_control.gd"
+extends "res://utility_code/draggable_control.gd"
 
 
 # Called when the node enters the scene tree for the first time.

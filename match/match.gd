@@ -8,8 +8,6 @@ const FIELD_SIZE := Vector2(3.3,3.3)
 var game_server : IGameServer
 
 
-var leak_icons : Array[Node3D] = []
-
 var player_number := 0
 
 
@@ -32,12 +30,12 @@ var game_end := false
 
 
 func initialize(server : IGameServer):
+	game_end = false
 	%ResultMessage.hide()
 	%ReturnButton.hide()
 	
 	game_server = server
 	
-
 	var first_data := await game_server._send_ready_async()
 	
 	var my_color := first_data.my_colors[0]
@@ -56,13 +54,14 @@ func initialize(server : IGameServer):
 	)
 	
 	player_number = first_data.player_number
-	field.set_front_side_player(client_player,player_number == 1)
+	field.initialize(client_player,player_number == 1)
 	
 	if player_number == 1:
 		for i in first_data.my_hand:
 			var _card := await client_player._draw_async(i)
 		for i in first_data.rival_hand_count:
 			var _card := await rival._draw_async()
+		client_player.playable = true
 	else:
 		for i in first_data.rival_hand_count:
 			var _card := await rival._draw_async()
@@ -70,6 +69,7 @@ func initialize(server : IGameServer):
 			var _card := await client_player._draw_async(i)
 		var result = await game_server._wait_async()
 		await perform_result(result,rival)
+		client_player.playable = true
 
 
 func play(point_x : int,point_y : int):
