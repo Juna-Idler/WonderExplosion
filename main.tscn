@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://ce5b5klmdhdr4"]
+[gd_scene load_steps=8 format=3 uid="uid://ce5b5klmdhdr4"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_27b52"]
 [ext_resource type="PackedScene" uid="uid://dv8kqsra7qku1" path="res://card/deck_set_label.tscn" id="2_3d5r5"]
 [ext_resource type="PackedScene" uid="uid://deuihfhsutpe0" path="res://match/match.tscn" id="2_khl68"]
 [ext_resource type="PackedScene" uid="uid://dodisf11p0r2g" path="res://build/build.tscn" id="3_5m2bk"]
+[ext_resource type="FontFile" uid="uid://dy0ca7iescwax" path="res://font/LightNovelPOPv2.otf" id="3_tsjj0"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qbpmg"]
 
@@ -34,9 +35,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -448.0
-offset_top = -232.0
+offset_top = -280.0
 offset_right = 448.0
-offset_bottom = -104.0
+offset_bottom = -152.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "WONDER EXPLOSION"
@@ -52,9 +53,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -416.0
-offset_top = 152.0
+offset_top = 184.0
 offset_right = -64.0
-offset_bottom = 248.0
+offset_bottom = 280.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/font_size = 64
@@ -68,9 +69,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = 64.0
-offset_top = 152.0
+offset_top = 184.0
 offset_right = 416.0
-offset_bottom = 248.0
+offset_bottom = 280.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/font_size = 64
@@ -80,9 +81,9 @@ text = "ONLINE"
 [node name="Deck" type="Control" parent="TitleLayer/Panel"]
 anchors_preset = 0
 offset_left = 488.0
-offset_top = 272.0
+offset_top = 216.0
 offset_right = 792.0
-offset_bottom = 480.0
+offset_bottom = 424.0
 
 [node name="DeckSetLabel" parent="TitleLayer/Panel/Deck" instance=ExtResource("2_3d5r5")]
 unique_name_in_owner = true
@@ -111,6 +112,25 @@ grow_vertical = 2
 flat = true
 metadata/_edit_lock_ = true
 
+[node name="PlayerName" type="LineEdit" parent="TitleLayer/Panel"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -192.0
+offset_top = 88.0
+offset_right = 192.0
+offset_bottom = 152.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("3_tsjj0")
+theme_override_font_sizes/font_size = 32
+placeholder_text = "Your Name"
+alignment = 1
+
 [node name="Match" parent="." instance=ExtResource("2_khl68")]
 
 [node name="BuildLayer" type="CanvasLayer" parent="."]
@@ -123,6 +143,8 @@ unique_name_in_owner = true
 [connection signal="pressed" from="TitleLayer/Panel/Button" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="TitleLayer/Panel/OnlineButton" to="." method="_on_online_button_pressed"]
 [connection signal="pressed" from="TitleLayer/Panel/Deck/BuildButton" to="." method="_on_build_button_pressed"]
+[connection signal="text_changed" from="TitleLayer/Panel/PlayerName" to="." method="_on_player_name_text_changed"]
+[connection signal="text_submitted" from="TitleLayer/Panel/PlayerName" to="." method="_on_player_name_text_submitted"]
 [connection signal="requested_return" from="Match" to="." method="_on_match_requested_return"]
 [connection signal="back_button_pressed" from="BuildLayer/Build" to="." method="_on_build_back_button_pressed"]
 [connection signal="request_save" from="BuildLayer/Build" to="." method="_on_build_request_save"]

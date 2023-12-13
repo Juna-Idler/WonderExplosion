@@ -4,7 +4,7 @@ class_name NonPlayablePlayer
 
 signal life_changed(life : int)
 
-const CardTexture = preload("res://card/card_texture.tscn")
+const CardTextureScene = preload("res://card/card_texture.tscn")
 
 const HANDAREA_SIZE := Vector2(4.0,1.1)
 const CARD_WIDTH := 1.0
@@ -36,6 +36,10 @@ var rival_player : NonPlayablePlayer
 var opponent_layout : bool
 
 func initialize_unknown(p_name : String,color : Color,rival : NonPlayablePlayer,opponent : bool):
+	for v in card_textures.values():
+		remove_child(v)
+		v.queue_free()
+	card_textures.clear()
 	player_name = p_name
 	player_color = color
 	life = 20
@@ -193,7 +197,7 @@ func _open_card_async(card : Card,card_id : int):
 func _set_card_texture(card : Card,card_id : int):
 	var data := Global.card_list.get_card_data(card_id)
 	if not card_textures.has(card_id):
-		var ct := CardTexture.instantiate()
+		var ct := CardTextureScene.instantiate()
 		add_child(ct)
 		ct.initialize(data,player_color,null,opponent_layout)
 		card_textures[card_id] = ct

@@ -30,7 +30,7 @@ func initialize(my_name : String,my_card_list : Array[int],cpu_card_list : Array
 	var cpu_deck : Array[Mechanics.CardData] = []
 	cpu_deck.assign(cpu_card_list.map(card_data_translate)) 
 	
-	first_data.my_deck = my_card_list
+	first_data.my_deck.assign(my_card_list)
 	first_data.rival_deck_count = cpu_card_list.size()
 	if randi() & 1:
 		if not board.initialize(my_deck,cpu_deck):

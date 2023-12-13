@@ -5,6 +5,8 @@ signal requested_return
 const FIELD_SIZE := Vector2(3.3,3.3)
 
 
+const CANT_PLAY_COLOR := Color(0,0,0,0.8)
+
 var game_server : IGameServer
 
 
@@ -20,6 +22,8 @@ var game_end := false
 
 @onready var my_hp : Label = %MyHP
 @onready var rival_hp : Label = %RivalHP
+@onready var my_name : Label = %MyName
+@onready var rival_name : Label = %RivalName
 
 @onready var conflict_effect = $Board/ConflictEffect
 
@@ -43,6 +47,9 @@ func initialize(server : IGameServer):
 	var rival_color := first_data.rival_colors[0]
 	if ColorDistance.near_color(my_color,rival_color):
 		rival_color = first_data.rival_colors[1]
+	
+	my_name.text = first_data.my_name
+	rival_name.text = first_data.rival_name
 	
 	client_player.initialize(first_data.my_name,first_data.my_deck,my_color,rival)
 	rival.initialize_unknown(first_data.rival_name,rival_color,client_player,true)
@@ -317,27 +324,29 @@ func perform_cross_explosion_effect(positions : Array[int],o_positions : Array[i
 	explosion_power.hide()
 	explosion_power_2.hide()
 
+
+var last_selecting : int = -1
+
 func _on_player_selecting(hit_position):
+	if last_selecting >= 0:
+		field.get_client_square(last_selecting).set_color(Color.TRANSPARENT)
+	
 	if (-FIELD_SIZE.x / 2 < hit_position.x and hit_position.x < FIELD_SIZE.x / 2 and
 			-FIELD_SIZE.y / 2 < hit_position.z and hit_position.z < FIELD_SIZE.y / 2):
 		var point_x : int = int((hit_position.x + FIELD_SIZE.x / 2) / (FIELD_SIZE.x / 3))
 		var point_y : int = int((hit_position.z + FIELD_SIZE.y / 2) / (FIELD_SIZE.y / 3))
-		for i in 9:
-			if i == point_x + point_y * 3:
-				var sq := field.get_client_square(point_x + point_y * 3)
-				if sq.card == null:
-					sq.set_color(Color(0.0,0.0,1.0,0.5))
-				elif client_player.open_play:
-					sq.set_color(Color(0.0,0.0,0.0,0.8))
-				elif sq.player == client_player or not sq.secret:
-					sq.set_color(Color(0.0,0.0,0.0,0.8))
-				else:
-					sq.set_color(Color(0.0,0.0,1.0,0.5))
-			else:
-				field.get_client_square(i).set_color(Color.TRANSPARENT)
+		var sq := field.get_client_square(point_x + point_y * 3)
+		if sq.card == null:
+			sq.set_color(Color(client_player.player_color,0.5))
+		elif client_player.open_play:
+			sq.set_color(CANT_PLAY_COLOR)
+		elif sq.player == client_player or not sq.secret:
+			sq.set_color(CANT_PLAY_COLOR)
+		else:
+			sq.set_color(Color(client_player.player_color,0.5))
+		last_selecting = point_x + point_y * 3
 	else:
-		for i in 9:
-			field.get_client_square(i).set_color(Color.TRANSPARENT)
+		last_selecting = -1
 	
 
 func _on_player_decided(hit_position):
@@ -347,6 +356,7 @@ func _on_player_decided(hit_position):
 		var point_y : int = int((hit_position.z + FIELD_SIZE.y / 2) / (FIELD_SIZE.y / 3))
 		field.get_client_square(point_x + point_y * 3).set_color(Color.TRANSPARENT)
 		play(point_x,point_y)
+		last_selecting = -1
 
 
 

@@ -7,6 +7,8 @@ extends Node
 @onready var build = %Build
 @onready var deck_set_label = %DeckSetLabel
 
+@onready var player_name_edit = %PlayerName
+
 var player_name : String = "no name"
 var player_deck : Deck
 
@@ -14,7 +16,12 @@ var offline_server := OfflineServer.new()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	player_deck = Deck.new("Default Deck",[1,2,3,4,5,6],Color.BLUE,Color.RED)
+	Global.settings.load()
+	
+	player_deck = Global.settings.deck
+	player_name = Global.settings.player_name
+	player_name_edit.text = player_name
+
 	deck_set_label.initialize(player_deck)
 	match_scene.set_process(false)
 	build.set_process(false)
@@ -56,9 +63,20 @@ func _on_build_back_button_pressed():
 
 func _on_build_request_save(deck):
 	player_deck = deck
+	Global.settings.deck = deck
+	Global.settings.save()
 	deck_set_label.initialize(deck)
 
 
 
 func _on_online_button_pressed():
 	get_tree().change_scene_to_file("res://online/main.tscn")
+
+
+func _on_player_name_text_changed(new_text):
+	player_name = new_text
+	Global.settings.player_name = player_name
+
+func _on_player_name_text_submitted(_new_text):
+	Global.settings.save()
+
