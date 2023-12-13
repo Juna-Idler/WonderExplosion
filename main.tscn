@@ -74,6 +74,7 @@ offset_bottom = 248.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/font_size = 64
+disabled = true
 text = "ONLINE"
 
 [node name="Deck" type="Control" parent="TitleLayer/Panel"]

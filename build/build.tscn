@@ -137,12 +137,14 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 color = Color(0, 0, 1, 1)
+edit_alpha = false
 
 [node name="SecondaryColor" type="ColorPickerButton" parent="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 color = Color(1, 0, 0, 1)
+edit_alpha = false
 
 [node name="Mover" type="TextureRect" parent="."]
 unique_name_in_owner = true
@@ -156,3 +158,5 @@ stretch_mode = 4
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Header/BackButton" to="." method="_on_back_button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Header/SaveButton" to="." method="_on_save_button_pressed"]
 [connection signal="item_selected" from="MarginContainer/VBoxContainer/HBoxContainer/ItemList" to="." method="_on_item_list_item_selected"]
+[connection signal="color_changed" from="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/PrimaryColor" to="." method="_on_primary_color_color_changed"]
+[connection signal="color_changed" from="MarginContainer/VBoxContainer/HBoxContainer/MarginContainer/VBoxContainer/HBoxContainer/SecondaryColor" to="." method="_on_secondary_color_color_changed"]

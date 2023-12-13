@@ -38,8 +38,11 @@ func initialize(server : IGameServer):
 	
 	var first_data := await game_server._send_ready_async()
 	
+	
 	var my_color := first_data.my_colors[0]
 	var rival_color := first_data.rival_colors[0]
+	if ColorDistance.near_color(my_color,rival_color):
+		rival_color = first_data.rival_colors[1]
 	
 	client_player.initialize(first_data.my_name,first_data.my_deck,my_color,rival)
 	rival.initialize_unknown(first_data.rival_name,rival_color,client_player,true)

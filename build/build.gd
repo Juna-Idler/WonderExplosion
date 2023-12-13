@@ -18,8 +18,11 @@ var pack_select_list : Dictionary = {}
 @onready var mover : TextureRect = %Mover
 @onready var deck_name = %DeckName
 
-@onready var primary_color = %PrimaryColor
-@onready var secondary_color = %SecondaryColor
+@onready var primary_color_button = %PrimaryColor
+@onready var secondary_color_button = %SecondaryColor
+
+var primary_color : Color
+var secondary_color : Color
 
 @onready var deck_power = %DeckPower
 const DECK_POWER_TEXT := "DECK (%d)"
@@ -30,6 +33,8 @@ var deck_power_point : int = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	var d := Deck.new("",[1,2,3,4,5,6],Color.BLUE,Color.RED)
+	initialize(d)
 	pass # Replace with function body.
 
 
@@ -58,8 +63,10 @@ func initialize(deck : Deck):
 		deck_power_point += Global.card_list.get_card_data(d).power
 	deck_power.text = DECK_POWER_TEXT % deck_power_point
 
-	primary_color.color = deck.primary_color
-	secondary_color.color = deck.secondary_color
+	primary_color_button.color = deck.primary_color
+	secondary_color_button.color = deck.secondary_color
+	primary_color = deck.primary_color
+	secondary_color = deck.secondary_color
 
 	save_button.disabled = false
 
@@ -169,8 +176,24 @@ func _on_save_button_pressed():
 	var cards : Array[int] = []
 	for c in deck_list.get_children():
 		cards.append(c.get_meta("card_id"))
-	var p_color : Color = primary_color.color
-	var s_color : Color = secondary_color.color
+	var p_color : Color = primary_color_button.color
+	var s_color : Color = secondary_color_button.color
 	var deck := Deck.new(deck_name.text,cards,p_color,s_color)
 	request_save.emit(deck)
 
+
+
+func _on_primary_color_color_changed(color):
+	if ColorDistance.near_color(color,secondary_color):
+		if primary_color_button.color != primary_color:
+			primary_color_button.color = primary_color
+	else:
+		primary_color = color
+
+
+func _on_secondary_color_color_changed(color):
+	if ColorDistance.near_color(color,primary_color):
+		if secondary_color_button.color != secondary_color:
+			secondary_color_button.color = secondary_color
+	else:
+		secondary_color = color
