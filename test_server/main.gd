@@ -5,7 +5,7 @@ extends Node
 
 @onready var websocket_server : WebsocketServer = $WebsocketServer
 
-var _version : String
+var _version : String = "0.0"
 
 class ClientData:
 	var client_id : int
@@ -13,6 +13,7 @@ class ClientData:
 	var deck : PackedInt32Array
 	var colors : Array[Color]
 	var ready : bool
+	var first_data : IGameServer.FirstData = null
 	
 	func _init(id : int,n : String,d : PackedInt32Array,pc : Color,sc : Color):
 		client_id = id
@@ -29,7 +30,7 @@ class GameRoom:
 	var player2 : ClientData
 	var starting_time : float
 
-	func _init(p1 : ClientData,p2 : ClientData):
+	func initialize(p1 : ClientData,p2 : ClientData) -> bool:
 		game = Mechanics.Board.new()
 		
 		if randi() & 1:
@@ -47,11 +48,25 @@ class GameRoom:
 		for i in player2.deck:
 			var data := Global.card_list.get_card_data(i)
 			deck2.append(Mechanics.CardData.new(data.id,data.power,data.arrows))
-		game.initialize(deck1,deck2)
+		var first := game.initialize(deck1,deck2)
+		if first.is_empty():
+			return false
+		player1.first_data = first[0]
+		player2.first_data = first[1]
+		player1.first_data.my_name = player1.name
+		player1.first_data.rival_name = player2.name
+		player1.first_data.my_colors = player1.colors
+		player1.first_data.rival_colors = player2.colors
+		player2.first_data.my_name = player2.name
+		player2.first_data.rival_name = player1.name
+		player2.first_data.my_colors = player2.colors
+		player2.first_data.rival_colors = player1.colors
+		
 		var p1_json := JSON.stringify({"type":"Matched","data":{}})
 		var p2_json := JSON.stringify({"type":"Matched","data":{}})
 		websocket_server.send(player1.client_id,p1_json)
 		websocket_server.send(player2.client_id,p2_json)
+		return true
 	
 	func receive_ready(client_id : int):
 		if player1.client_id == client_id:
@@ -59,18 +74,8 @@ class GameRoom:
 		elif player2.client_id == client_id:
 			player2.ready = true
 		if player1.ready and player2.ready:
-			var first1 := game.player1.create_first_data()
-			var first2 := game.player2.create_first_data()
-			first1.my_name = player1.name
-			first1.rival_name = player2.name
-			first2.my_name = player2.name
-			first2.rival_name = player1.name
-			first1.my_colors = player1.colors
-			first1.rival_colors = player2.colors
-			first2.my_colors = player2.colors
-			first2.rival_colors = player1.colors
-			websocket_server.send(player1.client_id,JSON.stringify({"type":"First","data":first1.serialize()}))
-			websocket_server.send(player2.client_id,JSON.stringify({"type":"First","data":first2.serialize()}))
+			websocket_server.send(player1.client_id,JSON.stringify({"type":"First","data":player1.first_data.serialize()}))
+			websocket_server.send(player2.client_id,JSON.stringify({"type":"First","data":player2.first_data.serialize()}))
 		
 	func receive_play(client_id : int,index : int,position : int):
 		var result : IGameServer.Result = null
@@ -178,10 +183,11 @@ func _on_websocket_server_received(client_id : int, message : String):
 			 
 			if wait != null and websocket_server.client_opened(wait.client_id):
 				print("Match:" + str(client_id) + "&" + str(wait.client_id))
-				var room := GameRoom.new(wait,client)
-				match_users[wait.client_id] = room
-				match_users[client_id] = room
-				wait = null
+				var room := GameRoom.new()
+				if room.initialize(wait,client):
+					match_users[wait.client_id] = room
+					match_users[client_id] = room
+					wait = null
 			else:
 				wait = client
 

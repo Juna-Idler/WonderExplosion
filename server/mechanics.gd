@@ -5,12 +5,12 @@ class_name Mechanics
 class CardData:
 	var id : int
 	var power : int
-	var leaks : PackedInt32Array
+	var arrows : PackedInt32Array
 
 	func _init(i : int,p : int,l : PackedInt32Array):
 		id = i
 		power = p
-		leaks = l
+		arrows = l
 
 class Player:
 	var deck : Array[CardData]
@@ -41,11 +41,32 @@ class Player:
 		data.player_number = number
 		return data
 
+	func draw() -> Array[int]:
+		var drawn_cards : Array[int] = []
+		while hand.size() < 3:
+			if stock.is_empty():
+				if discard.is_empty():
+					break
+				else:
+					discard.shuffle()
+					stock = discard
+					discard = []
+			while hand.size() < 3 and not stock.is_empty():
+				var card : int = stock.pop_back()
+				hand.push_back(card)
+				drawn_cards.push_back(card)
+		return drawn_cards
+
 
 class Square:
 	var owner : Player = null
 	var deck_index : int = -1
 	var opened : bool = false
+
+	func set_card(p : Player,i : int,o : bool):
+		owner = p
+		deck_index = i
+		opened = o
 	
 	func reset():
 		owner = null
@@ -66,22 +87,13 @@ class Board:
 	var draw_replay_index : int = -1
 
 
-	func get_winner() -> int:
-		if turn_player or player1 == null or player2 == null:
-			return 0
-		if player1.hp <= 0:
-			return 2
-		if player2.hp <= 0:
-			return 1
-		return 0
-
 	func get_next_player() -> int:
 		if exturn_player:
 			return exturn_player.number
 		return turn_player.number
 
 
-	func initialize(p1_deck : Array[CardData],p2_deck : Array[CardData]) -> bool:
+	func initialize(p1_deck : Array[CardData],p2_deck : Array[CardData]) -> Array[IGameServer.FirstData]:
 		player1 = null
 		player2 = null
 		field.assign(range(9).map(func(_i):return Square.new()))
@@ -89,14 +101,14 @@ class Board:
 		turn_player = null
 		exturn_player = null
 		if p1_deck.size() != 6 or p2_deck.size() != 6:
-			return false
+			return []
 		var p1_total : int = 0
 		var p2_total : int = 0
 		for i in 6:
 			p1_total += p1_deck[i].power
 			p2_total += p2_deck[i].power
 		if p1_total < 15 or p2_total < 15:
-			return false
+			return []
 		
 		player1 = Player.new(p1_deck,1)
 		player2 = Player.new(p2_deck,2)
@@ -105,30 +117,29 @@ class Board:
 
 		turn_count = 1
 		turn_player = player1
-		return true
+		
+		return [player1.create_first_data(),player2.create_first_data()]
 
 
-	func play(player : Player,index : int,point : int) -> IGameServer.Result:
-		assert(point >= 0 and point < field.size(),"out of range:point=%d" % point)
+	func play(player : Player,index : int,position : int) -> IGameServer.Result:
+		assert(position >= 0 and position < field.size(),"out of range:position=%d" % position)
 		if not player.hand.has(index):
 			return null
 			
 		var result := IGameServer.Result.new()
 		result.turn_count = turn_count
 		result.player = player.number
-		result.position = point
+		result.position = position
 		result.play_card = player.deck[index].id
 		result.closed_play_card = result.play_card
-		var square := field[point]
+		var square := field[position]
 
 		if exturn_player:
 			if player != exturn_player:
 				return null
 			if square.owner:
 				return null
-			square.owner = player
-			square.deck_index = index
-			square.opened = true
+			square.set_card(player,index,true)
 			player.hand.erase(index)
 			exturn_player = null
 		else:
@@ -139,16 +150,12 @@ class Board:
 					return null
 				if square.owner:
 					return null
-				square.owner = player
-				square.deck_index = index
-				square.opened = true
+				square.set_card(player,index,true)
 				player.hand.erase(index)
 				draw_replay_index = -1
 			else:
 				if square.owner == null:
-					square.owner = player
-					square.deck_index = index
-					square.opened = false
+					square.set_card(player,index,false)
 					player.hand.erase(index)
 					result.play_card = -1
 				elif square.owner != player and not square.opened:
@@ -157,11 +164,10 @@ class Board:
 					var play_card := player.deck[index]
 					var square_card := square.owner.deck[square.deck_index]
 					battle.card = square_card.id
-					var square_power := maxi(square_card.power + get_total_leaks(point),0)
+					var square_power := maxi(square_card.power + get_total_arrows(position),0)
 					if square_power > play_card.power:
 						square.owner.discard.append(square.deck_index)
-						square.owner = player
-						square.deck_index = index
+						square.set_card(player,index,true)
 						player.hand.erase(index)
 						battle.result = 1
 					elif square_power < play_card.power:
@@ -189,75 +195,47 @@ class Board:
 			result.next_player = 0
 			return result
 		
-		
 		if exturn_player == null:
 			turn_count += 1
-			var draw : Array[int] = []
-			while turn_player.hand.size() < 3:
-				if turn_player.stock.is_empty():
-					if turn_player.discard.is_empty():
-						break
-					else:
-						turn_player.discard.shuffle()
-						turn_player.stock = turn_player.discard
-						turn_player.discard = []
-				while turn_player.hand.size() < 3 and not turn_player.stock.is_empty():
-					var card : int = turn_player.stock.pop_back()
-					turn_player.hand.push_back(card)
-					draw.push_back(card)
+			result.draw_cards = turn_player.draw()
 			result.next_player = turn_player.number
-			result.draw_cards = draw
 		else:
 			if exturn_player.hand.is_empty():
-				var draw : Array[int] = []
-				while exturn_player.hand.size() < 3:
-					if exturn_player.stock.is_empty():
-						if exturn_player.discard.is_empty():
-							break
-						else:
-							exturn_player.discard.shuffle()
-							exturn_player.stock = exturn_player.discard
-							exturn_player.discard = []
-					while exturn_player.hand.size() < 3 and not exturn_player.stock.is_empty():
-						var card : int = exturn_player.stock.pop_back()
-						exturn_player.hand.push_back(card)
-						draw.push_back(card)
-				result.draw_cards = draw
-			
+				result.draw_cards = exturn_player.draw()
 			result.next_player = exturn_player.number
 		return result
 
 
-	func get_leak(square : Square,direction : int) -> int:
+	func get_arrow(square : Square,direction : int) -> int:
 		if not square.opened:
 			return 0
 		if square.owner == player1:
-			return player1.deck[square.deck_index].leaks[direction]
+			return player1.deck[square.deck_index].arrows[direction]
 		if square.owner == player2:
-			return player2.deck[square.deck_index].leaks[(direction + 4) % 8]
+			return player2.deck[square.deck_index].arrows[(direction + 4) % 8]
 		return 0
 		
-	func get_total_leaks(point : int) -> int:
-		match point:
+	func get_total_arrows(position : int) -> int:
+		match position:
 			0:
-				return get_leak(field[1],6) + get_leak(field[3],0) + get_leak(field[4],7)
+				return get_arrow(field[1],6) + get_arrow(field[3],0) + get_arrow(field[4],7)
 			1:
-				return get_leak(field[0],2) + get_leak(field[2],6) + get_leak(field[3],1) + get_leak(field[4],0) + get_leak(field[5],7)
+				return get_arrow(field[0],2) + get_arrow(field[2],6) + get_arrow(field[3],1) + get_arrow(field[4],0) + get_arrow(field[5],7)
 			2:
-				return get_leak(field[1],2) + get_leak(field[4],1) + get_leak(field[5],0)
+				return get_arrow(field[1],2) + get_arrow(field[4],1) + get_arrow(field[5],0)
 			3:
-				return get_leak(field[0],4) + get_leak(field[1],5) + get_leak(field[4],6) + get_leak(field[6],0) + get_leak(field[7],7)
+				return get_arrow(field[0],4) + get_arrow(field[1],5) + get_arrow(field[4],6) + get_arrow(field[6],0) + get_arrow(field[7],7)
 			4:
-				return get_leak(field[0],3) + get_leak(field[1],4) + get_leak(field[2],5) + get_leak(field[3],2) \
-						+ get_leak(field[5],6) + get_leak(field[6],1) + get_leak(field[7],0) + get_leak(field[8],7)
+				return get_arrow(field[0],3) + get_arrow(field[1],4) + get_arrow(field[2],5) + get_arrow(field[3],2) \
+						+ get_arrow(field[5],6) + get_arrow(field[6],1) + get_arrow(field[7],0) + get_arrow(field[8],7)
 			5:
-				return get_leak(field[1],3) + get_leak(field[2],4) + get_leak(field[4],2) + get_leak(field[7],1) + get_leak(field[8],0)
+				return get_arrow(field[1],3) + get_arrow(field[2],4) + get_arrow(field[4],2) + get_arrow(field[7],1) + get_arrow(field[8],0)
 			6:
-				return get_leak(field[3],4) + get_leak(field[4],5) + get_leak(field[7],6)
+				return get_arrow(field[3],4) + get_arrow(field[4],5) + get_arrow(field[7],6)
 			7:
-				return get_leak(field[3],3) + get_leak(field[4],4) + get_leak(field[5],5) + get_leak(field[6],2) + get_leak(field[8],6)
+				return get_arrow(field[3],3) + get_arrow(field[4],4) + get_arrow(field[5],5) + get_arrow(field[6],2) + get_arrow(field[8],6)
 			8:
-				return get_leak(field[4],3) + get_leak(field[5],4) + get_leak(field[7],2)
+				return get_arrow(field[4],3) + get_arrow(field[5],4) + get_arrow(field[7],2)
 
 		return 0
 
@@ -290,11 +268,11 @@ class Board:
 				for p in field.size():
 					var square := field[p]
 					if square.owner == player:
-						player_total_power += player.deck[square.deck_index].power + get_total_leaks(p)
+						player_total_power += player.deck[square.deck_index].power + get_total_arrows(p)
 						explosion.positions.append(p)
 						explosion.cards.append(player.deck[square.deck_index].id)
 					elif square.owner == player.rival:
-						rival_total_power += player.rival.deck[square.deck_index].power + get_total_leaks(p)
+						rival_total_power += player.rival.deck[square.deck_index].power + get_total_arrows(p)
 						oexp.positions.append(p)
 						oexp.cards.append(player.rival.deck[square.deck_index].id)
 				explosion.power = maxi(player_total_power,0)
@@ -322,16 +300,16 @@ class Board:
 			return null
 		else:
 			var explosion := IGameServer.Result.Explosion.new()
-			var points : Dictionary = {}
+			var positions : Dictionary = {}
 			for pat in exp_pattern:
 				for p in pat:
-					points[p] = true
+					positions[p] = true
 					field[p].opened = true
 			
 			var total_power := 0
-			for p in points:
+			for p in positions:
 				var square := field[p]
-				total_power += square.owner.deck[square.deck_index].power + get_total_leaks(p)
+				total_power += square.owner.deck[square.deck_index].power + get_total_arrows(p)
 				explosion.positions.append(p)
 				explosion.cards.append(square.owner.deck[square.deck_index].id)
 			explosion.power = total_power
@@ -341,7 +319,7 @@ class Board:
 			else:
 				turn_player = null
 			
-			for p in points:
+			for p in positions:
 				var square := field[p]
 				player.discard.append(square.deck_index)
 				square.reset()

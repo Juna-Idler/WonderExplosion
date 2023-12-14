@@ -7,7 +7,7 @@ func _ready():
 
 
 
-func initialize(card_data : CardList.CardData,color : Color,texture : Texture2D,opponent : bool):
+func initialize(card_data : CardList.CardData,color : Color,texture : Texture2D,_opponent : bool):
 	%LabelPower.text = str(card_data.power)
 	
 	var leak_labels := [%Label2,%Label3,%Label5,%Label8,%Label7,%Label6,%Label4,%Label1]

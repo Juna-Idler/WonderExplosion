@@ -20,32 +20,30 @@ func card_data_translate(id : int) -> Mechanics.CardData:
 	return card_data
 
 func initialize(my_name : String,my_card_list : Array[int],cpu_card_list : Array[int],my_colors : Array[Color],cpu_colors : Array[Color]) -> bool:
-	first_data.my_name = my_name
-	first_data.rival_name = "random cpu"
-	first_data.my_colors = my_colors
-	first_data.rival_colors = cpu_colors
-
 	var my_deck : Array[Mechanics.CardData] = []
 	my_deck.assign(my_card_list.map(card_data_translate)) 
 	var cpu_deck : Array[Mechanics.CardData] = []
 	cpu_deck.assign(cpu_card_list.map(card_data_translate)) 
 	
-	first_data.my_deck.assign(my_card_list)
-	first_data.rival_deck_count = cpu_card_list.size()
 	if randi() & 1:
-		if not board.initialize(my_deck,cpu_deck):
+		var first := board.initialize(my_deck,cpu_deck)
+		if first.is_empty():
 			return false
+		first_data = first[0]
 		player = board.player1
 		cpu_player = board.player2
 	else:
-		if not board.initialize(cpu_deck,my_deck):
+		var first := board.initialize(cpu_deck,my_deck)
+		if first.is_empty():
 			return false
+		first_data = first[1]
 		player = board.player2
 		cpu_player = board.player1
-	first_data.my_hand = player.hand.duplicate()
-	first_data.rival_hand_count = player.rival.hand.size()
-	first_data.player_number = player.number
-	
+		
+	first_data.my_name = my_name
+	first_data.rival_name = "random cpu"
+	first_data.my_colors = my_colors
+	first_data.rival_colors = cpu_colors
 	return true
 
 func _send_ready_async() -> IGameServer.FirstData:

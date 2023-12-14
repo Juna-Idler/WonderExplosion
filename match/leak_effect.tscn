@@ -1,79 +1,47 @@
-[gd_scene load_steps=22 format=3 uid="uid://2avi2fqe27tl"]
+[gd_scene load_steps=14 format=3 uid="uid://2avi2fqe27tl"]
 
 [ext_resource type="Script" path="res://match/leak_effect.gd" id="1_b7jyj"]
 [ext_resource type="PackedScene" uid="uid://bmtcm2eg17ij4" path="res://match/leak_icon.tscn" id="1_dyb4i"]
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_ex3s0"]
-viewport_path = NodePath("SubViewport")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_12gh4"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xvfgt"]
 resource_local_to_scene = true
 transparency = 1
 shading_mode = 0
-albedo_texture = SubResource("ViewportTexture_ex3s0")
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_5mr4r"]
-viewport_path = NodePath("SubViewport")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sm7ja"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kq77f"]
 resource_local_to_scene = true
 transparency = 1
 shading_mode = 0
-albedo_texture = SubResource("ViewportTexture_5mr4r")
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_osvg3"]
-viewport_path = NodePath("SubViewport")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_edhi4"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_27qun"]
 resource_local_to_scene = true
 transparency = 1
 shading_mode = 0
-albedo_texture = SubResource("ViewportTexture_osvg3")
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_pkgmv"]
-viewport_path = NodePath("SubViewport")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ifm5a"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_js21a"]
 resource_local_to_scene = true
 transparency = 1
 shading_mode = 0
-albedo_texture = SubResource("ViewportTexture_pkgmv")
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_miu8h"]
-viewport_path = NodePath("SubViewport")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5vq1i"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sp0pv"]
 resource_local_to_scene = true
 transparency = 1
 shading_mode = 0
-albedo_texture = SubResource("ViewportTexture_miu8h")
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_mpoer"]
-viewport_path = NodePath("SubViewport")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_48rxh"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ccp8j"]
 resource_local_to_scene = true
 transparency = 1
 shading_mode = 0
-albedo_texture = SubResource("ViewportTexture_mpoer")
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_3iyjx"]
-viewport_path = NodePath("SubViewport")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_agb28"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tpi5x"]
 resource_local_to_scene = true
 transparency = 1
 shading_mode = 0
-albedo_texture = SubResource("ViewportTexture_3iyjx")
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_6kjip"]
-viewport_path = NodePath("SubViewport")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ylcmg"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qntvu"]
 resource_local_to_scene = true
 transparency = 1
 shading_mode = 0
-albedo_texture = SubResource("ViewportTexture_6kjip")
 
 [sub_resource type="Animation" id="Animation_71gsi"]
 length = 0.001
@@ -286,35 +254,35 @@ script = ExtResource("1_b7jyj")
 
 [node name="LeakIcon0" parent="." instance=ExtResource("1_dyb4i")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.5)
-material_override = SubResource("StandardMaterial3D_12gh4")
+material_override = SubResource("StandardMaterial3D_xvfgt")
 
 [node name="LeakIcon1" parent="." instance=ExtResource("1_dyb4i")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, -0.5)
-material_override = SubResource("StandardMaterial3D_sm7ja")
+material_override = SubResource("StandardMaterial3D_kq77f")
 
 [node name="LeakIcon2" parent="." instance=ExtResource("1_dyb4i")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0)
-material_override = SubResource("StandardMaterial3D_edhi4")
+material_override = SubResource("StandardMaterial3D_27qun")
 
 [node name="LeakIcon3" parent="." instance=ExtResource("1_dyb4i")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0.5)
-material_override = SubResource("StandardMaterial3D_ifm5a")
+material_override = SubResource("StandardMaterial3D_js21a")
 
 [node name="LeakIcon4" parent="." instance=ExtResource("1_dyb4i")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.5)
-material_override = SubResource("StandardMaterial3D_5vq1i")
+material_override = SubResource("StandardMaterial3D_sp0pv")
 
 [node name="LeakIcon5" parent="." instance=ExtResource("1_dyb4i")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 0.5)
-material_override = SubResource("StandardMaterial3D_48rxh")
+material_override = SubResource("StandardMaterial3D_ccp8j")
 
 [node name="LeakIcon6" parent="." instance=ExtResource("1_dyb4i")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 0)
-material_override = SubResource("StandardMaterial3D_agb28")
+material_override = SubResource("StandardMaterial3D_tpi5x")
 
 [node name="LeakIcon7" parent="." instance=ExtResource("1_dyb4i")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, -0.5)
-material_override = SubResource("StandardMaterial3D_ylcmg")
+material_override = SubResource("StandardMaterial3D_qntvu")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

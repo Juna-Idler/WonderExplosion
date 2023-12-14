@@ -31,7 +31,8 @@ var game_end := false
 @onready var explosion_power = %ExplosionPower
 @onready var explosion_power_2 = %ExplosionPower2
 
-
+func _ready():
+	pass
 
 func initialize(server : IGameServer):
 	game_end = false

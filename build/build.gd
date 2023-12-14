@@ -33,8 +33,8 @@ var deck_power_point : int = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	var d := Deck.new("",[1,2,3,4,5,6],Color.BLUE,Color.RED)
-	initialize(d)
+	#var d := Deck.new("",[1,2,3,4,5,6],Color.BLUE,Color.RED)
+	#initialize(d)
 	pass # Replace with function body.
 
 

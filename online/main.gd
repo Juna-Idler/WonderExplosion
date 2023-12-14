@@ -13,7 +13,8 @@ extends Node
 
 @onready var match_scene = $Match
 
-@onready var deck_set_label = $MenuLayer/Panel/DeckSetLabel
+@onready var deck_set_label = %DeckSetLabel
+@onready var player_name_edit = %PlayerName
 
 @onready var websocket_client : WebsocketClient = $WebsocketClient
 
@@ -25,12 +26,16 @@ var server : OnlineServer = null
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	player_deck = Deck.new("Default Deck",[1,2,3,4,5,6],Color.BLUE,Color.RED)
+	player_deck = Global.settings.deck
+	player_name = Global.settings.player_name
+	player_name_edit.text = player_name
+	
 	deck_set_label.initialize(player_deck)
 	match_scene.set_process(false)
 	build.set_process(false)
 	
-	server = OnlineServer.new(websocket_client,"ver")
+	server = OnlineServer.new(websocket_client,"0.0")
+	server.connected.connect(on_server_connected)
 	
 	websocket_client.connect_to_url("127.0.0.1:" + str(Global.PORT_NUMBER))
 
@@ -39,8 +44,12 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 	pass
+
+func on_server_connected(version_match : bool):
+	if version_match:
+		match_button.disabled = false
 
 
 func _on_match_button_pressed():

@@ -29,6 +29,11 @@ window/stretch/mode="canvas_items"
 
 movie_writer/movie_file="D:/Godot4/exp_mov.avi"
 
+[filesystem]
+
+import/blender/enabled=false
+import/fbx/enabled=false
+
 [rendering]
 
 renderer/rendering_method="gl_compatibility"
