@@ -24,7 +24,7 @@ func _init(socket : WebsocketClient,version : String):
 	_socket = socket
 	_socket.received.connect(on_websocket_received)
 	_socket.connected.connect(on_websocket_connected)
-	_socket.disconnected.connect(func():disconnected.emit())
+	_socket.disconnected.connect(func(_code,_reason):disconnected.emit())
 
 
 func on_websocket_connected():

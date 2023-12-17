@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://dqrvob6uwynxh"]
+[gd_scene load_steps=11 format=3 uid="uid://dqrvob6uwynxh"]
 
 [ext_resource type="Script" path="res://online/main.gd" id="1_5378r"]
 [ext_resource type="PackedScene" uid="uid://dv8kqsra7qku1" path="res://card/deck_set_label.tscn" id="2_qddhw"]
@@ -11,6 +11,13 @@
 default_font_size = 24
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tk882"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3bnid"]
+bg_color = Color(0, 0, 0, 0.752941)
+
+[sub_resource type="LabelSettings" id="LabelSettings_qll7a"]
+font = ExtResource("3_hf454")
+font_size = 32
 
 [node name="Main" type="Node"]
 script = ExtResource("1_5378r")
@@ -107,6 +114,44 @@ placeholder_text = "Your Name"
 alignment = 1
 editable = false
 
+[node name="Message" type="Panel" parent="MenuLayer"]
+unique_name_in_owner = true
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_3bnid")
+
+[node name="Label" type="Label" parent="MenuLayer/Message"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -320.0
+offset_top = -104.0
+offset_right = 320.0
+offset_bottom = 88.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "サーバとの接続が切断されました"
+label_settings = SubResource("LabelSettings_qll7a")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MessageButton" type="Button" parent="MenuLayer/Message"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+flat = true
+
 [node name="BuildLayer" type="CanvasLayer" parent="."]
 layer = 10
 visible = false
@@ -122,6 +167,7 @@ script = ExtResource("5_rsftg")
 [connection signal="pressed" from="MenuLayer/Panel/BackButton" to="." method="_on_back_button_pressed"]
 [connection signal="pressed" from="MenuLayer/Panel/MatchButton" to="." method="_on_match_button_pressed"]
 [connection signal="pressed" from="MenuLayer/Panel/Deck/DeckSetLabel/DeckButton" to="." method="_on_deck_button_pressed"]
+[connection signal="pressed" from="MenuLayer/Message/MessageButton" to="." method="_on_message_button_pressed"]
 [connection signal="back_button_pressed" from="BuildLayer/Build" to="." method="_on_build_back_button_pressed"]
 [connection signal="request_save" from="BuildLayer/Build" to="." method="_on_build_request_save"]
 [connection signal="requested_return" from="Match" to="." method="_on_match_requested_return"]

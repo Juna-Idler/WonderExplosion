@@ -13,7 +13,7 @@ var game_server : IGameServer
 var player_number := 0
 
 
-var game_end := false
+var game_end := true
 
 @onready var field : Field = $Board/Field
 
@@ -35,14 +35,13 @@ func _ready():
 	pass
 
 func initialize(server : IGameServer):
-	game_end = false
 	%ResultMessage.hide()
 	%ReturnButton.hide()
 	
 	game_server = server
 	
 	var first_data := await game_server._send_ready_async()
-	
+	game_end = false
 	
 	var my_color := first_data.my_colors[0]
 	var rival_color := first_data.rival_colors[0]

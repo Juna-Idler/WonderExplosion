@@ -9,6 +9,9 @@ extends Node
 
 @onready var player_name_edit = %PlayerName
 
+@onready var server_url = %ServerURL
+
+
 var player_name : String = "no name"
 var player_deck : Deck
 
@@ -17,6 +20,8 @@ var offline_server := OfflineServer.new()
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	Global.settings.load()
+
+	server_url.text = Global.settings.online_url
 	
 	player_deck = Global.settings.deck
 	player_name = Global.settings.player_name
@@ -70,6 +75,8 @@ func _on_build_request_save(deck):
 
 
 func _on_online_button_pressed():
+	Global.settings.online_url = server_url.text
+	Global.settings.save()
 	get_tree().change_scene_to_file("res://online/main.tscn")
 
 

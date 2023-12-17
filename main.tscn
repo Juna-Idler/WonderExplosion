@@ -55,10 +55,10 @@ anchor_bottom = 0.5
 offset_left = -416.0
 offset_top = 184.0
 offset_right = -64.0
-offset_bottom = 280.0
+offset_bottom = 264.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_font_sizes/font_size = 64
+theme_override_font_sizes/font_size = 48
 text = "TEST PLAY"
 
 [node name="OnlineButton" type="Button" parent="TitleLayer/Panel"]
@@ -71,11 +71,22 @@ anchor_bottom = 0.5
 offset_left = 64.0
 offset_top = 184.0
 offset_right = 416.0
-offset_bottom = 280.0
+offset_bottom = 264.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_font_sizes/font_size = 64
+theme_override_font_sizes/font_size = 48
 text = "ONLINE"
+
+[node name="ServerURL" type="LineEdit" parent="TitleLayer/Panel/OnlineButton"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = -64.0
+offset_top = 88.0
+offset_right = 416.0
+offset_bottom = 152.0
+theme_override_font_sizes/font_size = 32
+placeholder_text = "Server url"
+alignment = 1
 
 [node name="Deck" type="Control" parent="TitleLayer/Panel"]
 anchors_preset = 0

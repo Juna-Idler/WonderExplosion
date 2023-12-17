@@ -1,7 +1,6 @@
 extends Node
 
 
-
 @onready var menu_layer = $MenuLayer
 @onready var back_button = %BackButton
 @onready var match_button = %MatchButton
@@ -15,6 +14,8 @@ extends Node
 
 @onready var deck_set_label = %DeckSetLabel
 @onready var player_name_edit = %PlayerName
+
+@onready var message = %Message
 
 @onready var websocket_client : WebsocketClient = $WebsocketClient
 
@@ -33,13 +34,13 @@ func _ready():
 	deck_set_label.initialize(player_deck)
 	match_scene.set_process(false)
 	build.set_process(false)
+	message.hide()
 	
 	server = OnlineServer.new(websocket_client,"0.0")
 	server.connected.connect(on_server_connected)
+	server.disconnected.connect(on_server_disconnected)
 	
-	websocket_client.connect_to_url("127.0.0.1:" + str(Global.PORT_NUMBER))
-
-	player_deck = Deck.new("Default Deck",[1,2,3,4,5,6],Color.BLUE,Color.RED)
+	websocket_client.connect_to_url(Global.settings.online_url)
 
 
 
@@ -51,6 +52,8 @@ func on_server_connected(version_match : bool):
 	if version_match:
 		match_button.disabled = false
 
+func on_server_disconnected():
+	message.show()
 
 func _on_match_button_pressed():
 	back_button.disabled = true
@@ -65,7 +68,6 @@ func _on_match_button_pressed():
 	back_button.disabled = false
 	match_button.disabled = false
 	deck_button.disabled = false
-
 
 
 func _on_back_button_pressed():
@@ -84,7 +86,6 @@ func _on_build_request_save(deck):
 	deck_set_label.initialize(deck)
 
 
-
 func _on_match_requested_return():
 	match_scene.set_process(false)
 	menu_layer.show()
@@ -96,3 +97,7 @@ func _on_deck_button_pressed():
 	build_layer.show()
 	menu_layer.hide()
 
+
+func _on_message_button_pressed():
+	get_tree().change_scene_to_file("res://main.tscn")
+	pass # Replace with function body.

@@ -34,7 +34,8 @@ func _gui_input(event: InputEvent):
 			_holding = false
 			if _dragging:
 				var point := (event as InputEventMouseButton).global_position
-				var relative := point - (_drag_point + get_global_rect().position)
+				var g_pos := get_global_rect().position
+				var relative := point - (_drag_point + g_pos)
 				_dragging = false
 				dropped.emit(self,relative,_drag_point)
 			else:
@@ -52,7 +53,8 @@ func _gui_input(event: InputEvent):
 			
 		elif event is InputEventMouseMotion:
 			var point := (event as InputEventMouseMotion).global_position
-			var relative := point - (_drag_point + get_global_rect().position)
+			var g_pos := get_global_rect().position
+			var relative := point - (_drag_point + g_pos)
 			if not _dragging and relative.length_squared() >= drag_amount:
 				_dragging = true
 				drag_start.emit(self,_drag_point)

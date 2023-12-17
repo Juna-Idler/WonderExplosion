@@ -31,3 +31,8 @@ var deck : Deck :
 		config.set_value("Deck","Cards",PackedInt32Array(d.cards))
 		config.set_value("Deck","Colors",[d.primary_color,d.secondary_color])
 
+var online_url : String :
+	get:
+		return config.get_value("Online","Server URL","")
+	set(v):
+		config.set_value("Online","Server URL",v)

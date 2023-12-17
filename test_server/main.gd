@@ -132,7 +132,6 @@ func _init():
 
 var wait : ClientData
 var match_users : Dictionary # client_id : GameRoom
-var match_rooms : Dictionary # of GameRoom
 
 
 # Called when the node enters the scene tree for the first time.
