@@ -2,6 +2,8 @@ extends Node3D
 
 class_name Field
 
+@export var audio_stream_player : AudioStreamPlayer
+
 @onready var leak_effect = $LeakEffect
 
 @onready var squares : Array[FieldSquare] = [
@@ -74,7 +76,9 @@ func play_leak_effect_async(index : int):
 	var card := get_square(index).card
 	var leaks := get_square_leaks(index)
 	if leak_effect.set_leaks(leaks):
-		await leak_effect.play(card.global_position,0.5)
+		audio_stream_player.stream = preload("res://sounds/ステータス上昇魔法2.mp3")
+		audio_stream_player.play()
+		await leak_effect.play(card.global_position,0.75)
 		var total : int = 0
 		for i in leaks:
 			total += i

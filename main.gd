@@ -105,11 +105,16 @@ func _on_match_finished(player_life, rival_life):
 	var result := int(rival_life <= 0) - int(player_life <= 0)
 	if result > 0:
 		result_message.text = "YOU WIN"
+		match_scene.audio_stream_player.stream = preload("res://sounds/レベルアップ.mp3")
+		match_scene.audio_stream_player.play()
 	elif result < 0:
+		match_scene.audio_stream_player.stream = preload("res://sounds/呪いの旋律.mp3")
+		match_scene.audio_stream_player.play()
 		result_message.text = "YOU LOSE"
 	else:
 		result_message.text = "DRAW"
-	result_display.hide()
+	settings.hide()
+	result_display.show()
 
 func _on_return_button_pressed():
 	match_ui_layer.hide()

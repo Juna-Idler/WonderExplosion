@@ -103,12 +103,15 @@ transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 3.3
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 5, 0)
 sky_mode = 1
 
-[node name="Field" parent="Board" instance=ExtResource("2_yybow")]
+[node name="Field" parent="Board" node_paths=PackedStringArray("audio_stream_player") instance=ExtResource("2_yybow")]
+audio_stream_player = NodePath("../../AudioStreamPlayer")
 
-[node name="Player" parent="Board" instance=ExtResource("5_yqfqc")]
+[node name="Player" parent="Board" node_paths=PackedStringArray("audio_stream_player") instance=ExtResource("5_yqfqc")]
+audio_stream_player = NodePath("../../AudioStreamPlayer")
 
-[node name="Rival" parent="Board" instance=ExtResource("5_l0ccr")]
+[node name="Rival" parent="Board" node_paths=PackedStringArray("audio_stream_player") instance=ExtResource("5_l0ccr")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
+audio_stream_player = NodePath("../../AudioStreamPlayer")
 
 [node name="FieldBack" type="MeshInstance3D" parent="Board"]
 mesh = SubResource("PlaneMesh_stadv")
@@ -136,6 +139,8 @@ double_sided = false
 text = "20"
 font_size = 120
 outline_size = 20
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 
 [connection signal="decided" from="Board/Player" to="." method="_on_player_decided"]
 [connection signal="selecting" from="Board/Player" to="." method="_on_player_selecting"]

@@ -7,17 +7,17 @@
 [ext_resource type="PackedScene" uid="uid://deuihfhsutpe0" path="res://match/match.tscn" id="4_tffcy"]
 [ext_resource type="Script" path="res://utility_code/websocket_client.gd" id="5_rsftg"]
 
-[sub_resource type="LabelSettings" id="LabelSettings_b3p0a"]
-font_size = 120
-outline_size = 20
-outline_color = Color(0, 0, 0, 1)
-
 [sub_resource type="Theme" id="Theme_22nd7"]
 default_font = ExtResource("3_hf454")
 default_font_size = 32
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uk7kk"]
 bg_color = Color(0, 0, 0, 0.870588)
+
+[sub_resource type="LabelSettings" id="LabelSettings_b3p0a"]
+font_size = 120
+outline_size = 20
+outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="Theme" id="Theme_qh5on"]
 default_font_size = 24
@@ -53,6 +53,37 @@ offset_bottom = 72.0
 grow_horizontal = 0
 theme_override_font_sizes/font_size = 32
 text = "Settings"
+
+[node name="Settings" type="Panel" parent="MatchUILayer"]
+unique_name_in_owner = true
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_22nd7")
+theme_override_styles/panel = SubResource("StyleBoxFlat_uk7kk")
+
+[node name="CloseSettingsButton" type="Button" parent="MatchUILayer/Settings"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -200.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = 72.0
+grow_horizontal = 0
+text = "BACK"
+
+[node name="SurrenderButton" type="Button" parent="MatchUILayer/Settings"]
+layout_mode = 1
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 272.0
+offset_bottom = 80.0
+text = "Surrender"
 
 [node name="ResultDisplay" type="Control" parent="MatchUILayer"]
 unique_name_in_owner = true
@@ -96,37 +127,6 @@ grow_horizontal = 2
 grow_vertical = 0
 theme_override_font_sizes/font_size = 64
 text = "RETURN"
-
-[node name="Settings" type="Panel" parent="MatchUILayer"]
-unique_name_in_owner = true
-visible = false
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme = SubResource("Theme_22nd7")
-theme_override_styles/panel = SubResource("StyleBoxFlat_uk7kk")
-
-[node name="CloseSettingsButton" type="Button" parent="MatchUILayer/Settings"]
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -200.0
-offset_top = 8.0
-offset_right = -8.0
-offset_bottom = 72.0
-grow_horizontal = 0
-text = "BACK"
-
-[node name="SurrenderButton" type="Button" parent="MatchUILayer/Settings"]
-layout_mode = 1
-offset_left = 16.0
-offset_top = 16.0
-offset_right = 272.0
-offset_bottom = 80.0
-text = "Surrender"
 
 [node name="BuildLayer" type="CanvasLayer" parent="."]
 layer = 10
@@ -245,7 +245,6 @@ theme_override_fonts/font = ExtResource("3_hf454")
 theme_override_font_sizes/font_size = 32
 placeholder_text = "Keyword"
 alignment = 1
-editable = false
 
 [node name="Message" type="Panel" parent="MenuLayer"]
 unique_name_in_owner = true
@@ -296,9 +295,9 @@ text = "タイトルに戻る"
 
 [connection signal="finished" from="Match" to="." method="_on_match_finished"]
 [connection signal="pressed" from="MatchUILayer/SettingsButton" to="." method="_on_settings_button_pressed"]
-[connection signal="pressed" from="MatchUILayer/ResultDisplay/ReturnButton" to="." method="_on_return_button_pressed"]
 [connection signal="pressed" from="MatchUILayer/Settings/CloseSettingsButton" to="." method="_on_close_settings_button_pressed"]
 [connection signal="pressed" from="MatchUILayer/Settings/SurrenderButton" to="." method="_on_surrender_button_pressed"]
+[connection signal="pressed" from="MatchUILayer/ResultDisplay/ReturnButton" to="." method="_on_return_button_pressed"]
 [connection signal="back_button_pressed" from="BuildLayer/Build" to="." method="_on_build_back_button_pressed"]
 [connection signal="request_save" from="BuildLayer/Build" to="." method="_on_build_request_save"]
 [connection signal="pressed" from="MenuLayer/Panel/BackButton" to="." method="_on_back_button_pressed"]

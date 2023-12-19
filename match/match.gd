@@ -33,6 +33,9 @@ var game_end_result : int
 @onready var explosion_power = %ExplosionPower
 @onready var explosion_power_2 = %ExplosionPower2
 
+@onready var audio_stream_player = $AudioStreamPlayer
+
+
 func _ready():
 	pass
 
@@ -208,6 +211,8 @@ func perform_result(result : IGameServer.Result, player : NonPlayablePlayer):
 			
 		else:
 			for i in e.positions.size():
+				audio_stream_player.stream = preload("res://sounds/ステータス上昇魔法2.mp3")
+				audio_stream_player.play()
 				await field.play_leak_effect_async(e.positions[i])
 			await perform_explosion_effect(e.positions,result.player == player_number)
 			player.rival_player.life -= e.power
@@ -245,8 +250,12 @@ func perform_battle_effect(play_card : Card,square_card : Card,result : int,fron
 	tween.tween_property(play_card,"position",Vector3(1.0,1.0,0),0.5)
 	tween.tween_property(square_card,"position",Vector3(1.0,1.0,0),0.5)
 	if result == 0:
+		audio_stream_player.stream = preload("res://sounds/剣で打ち合う4.mp3")
+		audio_stream_player.play()
 		await conflict_effect.play_draw()
 	else:
+		audio_stream_player.stream = preload("res://sounds/剣で斬る1.mp3")
+		audio_stream_player.play()
 		if (result > 0) == front_play:
 			await conflict_effect.play_win()
 		else:
@@ -265,6 +274,7 @@ func perform_explosion_effect(positions : Array[int],front_play : bool):
 		explosion_power.global_position = rival.battle_point.global_position + Vector3(0,0,1)
 	explosion_power.text = "0"
 	explosion_power.show()
+	audio_stream_player.stream = preload("res://sounds/拳銃をチャッと構える.mp3")
 	for i in positions.size():
 		var sq := field.get_square(positions[i])
 		var point := sq.player.battle_point.global_position
@@ -273,10 +283,16 @@ func perform_explosion_effect(positions : Array[int],front_play : bool):
 		point.y = 0.5
 		var tween := create_tween()
 		tween.tween_property(sq.card,"global_position",point,0.5)
+		tween.parallel().tween_interval(0.25)
+		tween.tween_callback(audio_stream_player.play)
 		await tween.finished
 		power += sq.card.get_current_power()
 		explosion_power.text = str(power)
-	
+
+	await get_tree().create_timer(0.5).timeout
+
+	audio_stream_player.stream = preload("res://sounds/爆発1.mp3")
+	audio_stream_player.play()
 	if front_play:
 		await conflict_effect.play_win()
 	else:
@@ -291,6 +307,7 @@ func perform_cross_explosion_effect(positions : Array[int],o_positions : Array[i
 		explosion_power.global_position = rival.battle_point.global_position + Vector3(0,0,1)
 		explosion_power_2.global_position = client_player.battle_point.global_position + Vector3(0,0,1)
 
+	audio_stream_player.stream = preload("res://sounds/拳銃をチャッと構える.mp3")
 	var power : int = 0
 	explosion_power.text = "0"
 	explosion_power.show()
@@ -302,6 +319,8 @@ func perform_cross_explosion_effect(positions : Array[int],o_positions : Array[i
 		point.y = 0.5
 		var tween := create_tween()
 		tween.tween_property(sq.card,"global_position",point,0.5)
+		tween.parallel().tween_interval(0.25)
+		tween.tween_callback(audio_stream_player.play)
 		await tween.finished
 		power += sq.card.get_current_power()
 		explosion_power.text = str(power)
@@ -317,12 +336,19 @@ func perform_cross_explosion_effect(positions : Array[int],o_positions : Array[i
 		point.y = 0.5
 		var tween := create_tween()
 		tween.tween_property(sq.card,"position",point,0.5)
+		tween.parallel().tween_interval(0.25)
+		tween.tween_callback(audio_stream_player.play)
 		await tween.finished
 		power2 += sq.card.get_current_power()
 		explosion_power_2.text = str(power2)
+	
+	await get_tree().create_timer(0.5).timeout
+	
 	if power == power2:
 		await conflict_effect.play_draw()
 	else:
+		audio_stream_player.stream = preload("res://sounds/爆発1.mp3")
+		audio_stream_player.play()
 		if front_play == (power > power2):
 			await conflict_effect.play_win()
 		else:

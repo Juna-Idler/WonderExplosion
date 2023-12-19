@@ -16,6 +16,7 @@ const CARD_WIDTH := 1.0
 @onready var battle_point : Node3D = $BattlePoint
 @onready var raised_point : Node3D = $RaisedPoint
 
+@export var audio_stream_player : AudioStreamPlayer
 
 var card_textures : Dictionary = {}
 
@@ -99,7 +100,7 @@ func _draw_async(deck_index : int = -1) -> Card:
 		var c := hand[i]
 		var target := Vector3(start + i * step,0.01,hand_area.position.z)
 		tween.tween_property(c,"position",target,0.5)
-	
+		
 	tween.set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
 	if deck_index != -1:
 		tween.tween_property(card,"rotation:z",0,0.25)
@@ -109,7 +110,6 @@ func _draw_async(deck_index : int = -1) -> Card:
 		tween.tween_property(card,"position",Vector3(start + (hand.size()-1) * step,0.01,hand_area.position.z),0.25)
 	else:
 		tween.tween_property(card,"position",Vector3(start + (hand.size()-1) * step,0.01,hand_area.position.z),0.5)
-	
 	await tween.finished
 	return card
 
@@ -124,10 +124,12 @@ func _play_set_async(point : Vector3,card_id : int = -1) -> Card:
 		if card.data == null:
 			_set_card_texture(card,card_id)
 		flip = 0.0
-		
+
+	audio_stream_player.stream = preload("res://sounds/決定ボタンを押す13.mp3")
 	var tween := create_tween().set_ease(Tween.EASE_OUT)
 	tween.tween_property(card,"position",raised_point.position,0.5).set_trans(Tween.TRANS_QUAD)
 	tween.parallel().tween_property(card,"rotation:z",flip,0.5)
+	tween.tween_callback(audio_stream_player.play)
 	tween.tween_property(card,"global_position",point,0.5).set_trans(Tween.TRANS_QUAD)
 	await tween.finished
 	return card
@@ -136,12 +138,15 @@ func _play_battle_async(point : Vector3,card_id : int) -> Card:
 	var card := _play_card()
 	if card.data == null:
 		_set_card_texture(card,card_id)
+
+	audio_stream_player.stream = preload("res://sounds/決定ボタンを押す1.mp3")
 	var tween := create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUAD)
 	tween.tween_property(card,"position",raised_point.position,0.5)
 	tween.parallel().tween_property(card,"rotation:z",0,0.5)
 	point.y += 0.1
 	tween.tween_property(card,"global_position",point,0.5)
 	tween.tween_callback(card.separate_power)
+	tween.tween_callback(audio_stream_player.play)
 	tween.tween_property(card,"position",battle_point.position,0.5)
 	await tween.finished
 	return card
@@ -157,11 +162,12 @@ func _counter_battle_async(card : Card,card_id : int):
 
 func _discard_async(card : Card):
 	discard.append(card)
-	
+	audio_stream_player.stream = preload("res://sounds/パフ.mp3")
 	var tween := create_tween().set_parallel()
 	var pos := Vector3(discard_area.position.x,discard_area.position.y + discard.size() * 0.01,discard_area.position.z)
 	tween.tween_property(card,"position",pos,0.5)
 	tween.tween_property(card,"rotation:z",0,0.5)
+	tween.tween_callback(audio_stream_player.play)
 	await tween.finished
 
 func _bounce_async(card : Card):
@@ -191,6 +197,9 @@ func _open_card_async(card : Card,card_id : int):
 	tween.tween_property(card,"position",pos,0.2)
 	tween.parallel().tween_property(card,"rotation:z",0,0.4)
 	tween.tween_property(card,"position",original_pos,0.2)
+	
+	audio_stream_player.stream = preload("res://sounds/刀の素振り1.mp3")
+	audio_stream_player.play()
 	await tween.finished
 
 
