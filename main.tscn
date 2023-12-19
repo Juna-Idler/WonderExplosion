@@ -1,10 +1,22 @@
-[gd_scene load_steps=8 format=3 uid="uid://ce5b5klmdhdr4"]
+[gd_scene load_steps=11 format=3 uid="uid://ce5b5klmdhdr4"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_27b52"]
 [ext_resource type="PackedScene" uid="uid://dv8kqsra7qku1" path="res://card/deck_set_label.tscn" id="2_3d5r5"]
 [ext_resource type="PackedScene" uid="uid://deuihfhsutpe0" path="res://match/match.tscn" id="2_khl68"]
 [ext_resource type="PackedScene" uid="uid://dodisf11p0r2g" path="res://build/build.tscn" id="3_5m2bk"]
 [ext_resource type="FontFile" uid="uid://dy0ca7iescwax" path="res://font/LightNovelPOPv2.otf" id="3_tsjj0"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_5hi46"]
+font_size = 120
+outline_size = 20
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="Theme" id="Theme_e204r"]
+default_font = ExtResource("3_tsjj0")
+default_font_size = 32
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_07maa"]
+bg_color = Color(0, 0, 0, 0.870588)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qbpmg"]
 
@@ -13,11 +25,109 @@ font_size = 80
 outline_size = 20
 outline_color = Color(0, 0, 0, 1)
 
-[node name="Main2" type="Node"]
+[node name="Main" type="Node"]
 script = ExtResource("1_27b52")
+
+[node name="Match" parent="." instance=ExtResource("2_khl68")]
+
+[node name="MatchUILayer" type="CanvasLayer" parent="."]
+layer = 2
+
+[node name="SettingsButton" type="Button" parent="MatchUILayer"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -200.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = 72.0
+grow_horizontal = 0
+theme_override_font_sizes/font_size = 32
+text = "Settings"
+
+[node name="ResultDisplay" type="Control" parent="MatchUILayer"]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ResultMessage" type="Label" parent="MatchUILayer/ResultDisplay"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -325.5
+offset_top = -82.5
+offset_right = 325.5
+offset_bottom = 82.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Game Over"
+label_settings = SubResource("LabelSettings_5hi46")
+
+[node name="ReturnButton" type="Button" parent="MatchUILayer/ResultDisplay"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -256.0
+offset_top = -200.0
+offset_right = 256.0
+offset_bottom = -104.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 64
+text = "RETURN TITLE"
+
+[node name="Settings" type="Panel" parent="MatchUILayer"]
+unique_name_in_owner = true
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_e204r")
+theme_override_styles/panel = SubResource("StyleBoxFlat_07maa")
+
+[node name="BackButton" type="Button" parent="MatchUILayer/Settings"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -200.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = 72.0
+grow_horizontal = 0
+text = "BACK"
+
+[node name="ReturnButton" type="Button" parent="MatchUILayer/Settings"]
+layout_mode = 1
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 272.0
+offset_bottom = 80.0
+text = "Return to Title"
+
+[node name="BuildLayer" type="CanvasLayer" parent="."]
+layer = 10
+visible = false
+
+[node name="Build" parent="BuildLayer" instance=ExtResource("3_5m2bk")]
+unique_name_in_owner = true
 
 [node name="TitleLayer" type="CanvasLayer" parent="."]
 layer = 10
+visible = false
 
 [node name="Panel" type="Panel" parent="TitleLayer"]
 anchors_preset = 15
@@ -141,20 +251,15 @@ theme_override_font_sizes/font_size = 32
 placeholder_text = "Your Name"
 alignment = 1
 
-[node name="Match" parent="." instance=ExtResource("2_khl68")]
-
-[node name="BuildLayer" type="CanvasLayer" parent="."]
-layer = 10
-visible = false
-
-[node name="Build" parent="BuildLayer" instance=ExtResource("3_5m2bk")]
-unique_name_in_owner = true
-
+[connection signal="finished" from="Match" to="." method="_on_match_finished"]
+[connection signal="pressed" from="MatchUILayer/SettingsButton" to="." method="_on_settings_button_pressed"]
+[connection signal="pressed" from="MatchUILayer/ResultDisplay/ReturnButton" to="." method="_on_return_button_pressed"]
+[connection signal="pressed" from="MatchUILayer/Settings/BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="MatchUILayer/Settings/ReturnButton" to="." method="_on_return_button_pressed"]
+[connection signal="back_button_pressed" from="BuildLayer/Build" to="." method="_on_build_back_button_pressed"]
+[connection signal="request_save" from="BuildLayer/Build" to="." method="_on_build_request_save"]
 [connection signal="pressed" from="TitleLayer/Panel/Button" to="." method="_on_button_pressed"]
 [connection signal="pressed" from="TitleLayer/Panel/OnlineButton" to="." method="_on_online_button_pressed"]
 [connection signal="pressed" from="TitleLayer/Panel/Deck/BuildButton" to="." method="_on_build_button_pressed"]
 [connection signal="text_changed" from="TitleLayer/Panel/PlayerName" to="." method="_on_player_name_text_changed"]
 [connection signal="text_submitted" from="TitleLayer/Panel/PlayerName" to="." method="_on_player_name_text_submitted"]
-[connection signal="requested_return" from="Match" to="." method="_on_match_requested_return"]
-[connection signal="back_button_pressed" from="BuildLayer/Build" to="." method="_on_build_back_button_pressed"]
-[connection signal="request_save" from="BuildLayer/Build" to="." method="_on_build_request_save"]

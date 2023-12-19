@@ -9,7 +9,7 @@ signal matched
 
 signal received_first(data : IGameServer.FirstData)
 signal received_result(data : IGameServer.Result)
-signal recieved_end(msg : String)
+signal received_end(msg : String)
 
 var _socket : WebsocketClient
 
@@ -36,17 +36,27 @@ func on_websocket_connected():
 	 }
 	_socket.send(JSON.stringify(dic))
 
-func send_match(player_name :String,deck :PackedInt32Array,p_color : Color,s_color : Color):
+func send_match(player_name :String,deck :PackedInt32Array,p_color : Color,s_color : Color,key : String):
 	var dic := {
 		"type":"Match",
 		"data":{
 			"n":player_name,
 			"d":deck,
-			"c":[p_color.to_html(),s_color.to_html()]
+			"c":[p_color.to_html(),s_color.to_html()],
+			"k":key
 		}
 	}
 	_socket.send(JSON.stringify(dic))
 
+func send_match_cancel(key : String):
+	var dic := {
+		"type":"MatchCancel",
+		"data":{
+			"k":key
+		}
+	}
+	_socket.send(JSON.stringify(dic))
+	pass
 
 func _send_ready_async() -> IGameServer.FirstData:
 	result_stack = []
@@ -84,6 +94,14 @@ func _wait_async() -> Result:
 	return result
 	
 
+func send_surrender():
+	var dic : Dictionary = {
+		"type" : "End",
+		"data" : {
+		}
+	}
+	_socket.send(JSON.stringify(dic))
+
 func on_websocket_received(message : String):
 	var dic = JSON.parse_string(message) as Dictionary
 	if dic == null:
@@ -113,5 +131,5 @@ func on_websocket_received(message : String):
 
 		"End":
 			var msg := data["msg"] as String
-			recieved_end.emit(msg)
+			received_end.emit(msg)
 			

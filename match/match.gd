@@ -1,6 +1,7 @@
 extends Node
 
-signal requested_return
+
+signal finished(player_life : int,rival_life : int)
 
 const FIELD_SIZE := Vector2(3.3,3.3)
 
@@ -14,6 +15,7 @@ var player_number := 0
 
 
 var game_end := true
+var game_end_result : int
 
 @onready var field : Field = $Board/Field
 
@@ -35,9 +37,7 @@ func _ready():
 	pass
 
 func initialize(server : IGameServer):
-	%ResultMessage.hide()
-	%ReturnButton.hide()
-	
+
 	game_server = server
 	
 	var first_data := await game_server._send_ready_async()
@@ -79,7 +79,13 @@ func initialize(server : IGameServer):
 			var _card := await client_player._draw_async(i)
 		var result = await game_server._wait_async()
 		await perform_result(result,rival)
+		if game_end:
+			finished.emit(client_player.life,rival.life)
 		client_player.playable = true
+
+func end():
+	game_end = true
+	client_player.playable = false
 
 
 func play(point_x : int,point_y : int):
@@ -94,8 +100,7 @@ func play(point_x : int,point_y : int):
 		return
 	await perform_result(result,client_player)
 	if game_end:
-		%ResultMessage.show()
-		%ReturnButton.show()
+		finished.emit(client_player.life,rival.life)
 	else:
 		client_player.playable = true
 	
@@ -216,8 +221,9 @@ func perform_result(result : IGameServer.Result, player : NonPlayablePlayer):
 				s.card = null
 	
 	if result.next_player == 0:
+		player.life = 0
 		game_end = true
-		pass
+		return
 	else:
 		if result.next_player != player_number:
 			for c in result.draw_cards:
@@ -358,7 +364,3 @@ func _on_player_decided(hit_position):
 		play(point_x,point_y)
 		last_selecting = -1
 
-
-
-func _on_return_button_pressed():
-	requested_return.emit()

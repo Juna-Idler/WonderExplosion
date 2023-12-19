@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://dqrvob6uwynxh"]
+[gd_scene load_steps=14 format=3 uid="uid://dqrvob6uwynxh"]
 
 [ext_resource type="Script" path="res://online/main.gd" id="1_5378r"]
 [ext_resource type="PackedScene" uid="uid://dv8kqsra7qku1" path="res://card/deck_set_label.tscn" id="2_qddhw"]
@@ -6,6 +6,18 @@
 [ext_resource type="PackedScene" uid="uid://dodisf11p0r2g" path="res://build/build.tscn" id="3_y1w7f"]
 [ext_resource type="PackedScene" uid="uid://deuihfhsutpe0" path="res://match/match.tscn" id="4_tffcy"]
 [ext_resource type="Script" path="res://utility_code/websocket_client.gd" id="5_rsftg"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_b3p0a"]
+font_size = 120
+outline_size = 20
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="Theme" id="Theme_22nd7"]
+default_font = ExtResource("3_hf454")
+default_font_size = 32
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uk7kk"]
+bg_color = Color(0, 0, 0, 0.870588)
 
 [sub_resource type="Theme" id="Theme_qh5on"]
 default_font_size = 24
@@ -21,6 +33,107 @@ font_size = 32
 
 [node name="Main" type="Node"]
 script = ExtResource("1_5378r")
+
+[node name="WebsocketClient" type="Node" parent="."]
+script = ExtResource("5_rsftg")
+
+[node name="Match" parent="." instance=ExtResource("4_tffcy")]
+
+[node name="MatchUILayer" type="CanvasLayer" parent="."]
+layer = 2
+
+[node name="SettingsButton" type="Button" parent="MatchUILayer"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -200.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = 72.0
+grow_horizontal = 0
+theme_override_font_sizes/font_size = 32
+text = "Settings"
+
+[node name="ResultDisplay" type="Control" parent="MatchUILayer"]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ResultMessage" type="Label" parent="MatchUILayer/ResultDisplay"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -325.5
+offset_top = -82.5
+offset_right = 325.5
+offset_bottom = 82.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Game Over"
+label_settings = SubResource("LabelSettings_b3p0a")
+
+[node name="ReturnButton" type="Button" parent="MatchUILayer/ResultDisplay"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -256.0
+offset_top = -200.0
+offset_right = 256.0
+offset_bottom = -104.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 64
+text = "RETURN"
+
+[node name="Settings" type="Panel" parent="MatchUILayer"]
+unique_name_in_owner = true
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_22nd7")
+theme_override_styles/panel = SubResource("StyleBoxFlat_uk7kk")
+
+[node name="CloseSettingsButton" type="Button" parent="MatchUILayer/Settings"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -200.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = 72.0
+grow_horizontal = 0
+text = "BACK"
+
+[node name="SurrenderButton" type="Button" parent="MatchUILayer/Settings"]
+layout_mode = 1
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 272.0
+offset_bottom = 80.0
+text = "Surrender"
+
+[node name="BuildLayer" type="CanvasLayer" parent="."]
+layer = 10
+visible = false
+
+[node name="Build" parent="BuildLayer" instance=ExtResource("3_y1w7f")]
+unique_name_in_owner = true
 
 [node name="MenuLayer" type="CanvasLayer" parent="."]
 layer = 10
@@ -47,9 +160,9 @@ text = "BACK"
 unique_name_in_owner = true
 layout_mode = 0
 offset_left = 512.0
-offset_top = 576.0
+offset_top = 448.0
 offset_right = 768.0
-offset_bottom = 640.0
+offset_bottom = 512.0
 disabled = true
 text = "Match"
 
@@ -103,14 +216,34 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -192.0
-offset_top = 72.0
+offset_top = -232.0
 offset_right = 192.0
-offset_bottom = 136.0
+offset_bottom = -168.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_fonts/font = ExtResource("3_hf454")
 theme_override_font_sizes/font_size = 32
 placeholder_text = "Your Name"
+alignment = 1
+editable = false
+
+[node name="Keyword" type="LineEdit" parent="MenuLayer/Panel"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -192.0
+offset_top = 184.0
+offset_right = 192.0
+offset_bottom = 248.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("3_hf454")
+theme_override_font_sizes/font_size = 32
+placeholder_text = "Keyword"
 alignment = 1
 editable = false
 
@@ -124,7 +257,8 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_3bnid")
 
-[node name="Label" type="Label" parent="MenuLayer/Message"]
+[node name="MessageLabel" type="Label" parent="MenuLayer/Message"]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -132,9 +266,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -320.0
-offset_top = -104.0
+offset_top = -168.0
 offset_right = 320.0
-offset_bottom = 88.0
+offset_bottom = 24.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "サーバとの接続が切断されました"
@@ -145,29 +279,29 @@ vertical_alignment = 1
 [node name="MessageButton" type="Button" parent="MenuLayer/Message"]
 unique_name_in_owner = true
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -320.0
+offset_top = 24.0
+offset_right = 320.0
+offset_bottom = 216.0
 grow_horizontal = 2
 grow_vertical = 2
-flat = true
+theme_override_fonts/font = ExtResource("3_hf454")
+theme_override_font_sizes/font_size = 32
+text = "タイトルに戻る"
 
-[node name="BuildLayer" type="CanvasLayer" parent="."]
-layer = 10
-visible = false
-
-[node name="Build" parent="BuildLayer" instance=ExtResource("3_y1w7f")]
-unique_name_in_owner = true
-
-[node name="Match" parent="." instance=ExtResource("4_tffcy")]
-
-[node name="WebsocketClient" type="Node" parent="."]
-script = ExtResource("5_rsftg")
-
+[connection signal="finished" from="Match" to="." method="_on_match_finished"]
+[connection signal="pressed" from="MatchUILayer/SettingsButton" to="." method="_on_settings_button_pressed"]
+[connection signal="pressed" from="MatchUILayer/ResultDisplay/ReturnButton" to="." method="_on_return_button_pressed"]
+[connection signal="pressed" from="MatchUILayer/Settings/CloseSettingsButton" to="." method="_on_close_settings_button_pressed"]
+[connection signal="pressed" from="MatchUILayer/Settings/SurrenderButton" to="." method="_on_surrender_button_pressed"]
+[connection signal="back_button_pressed" from="BuildLayer/Build" to="." method="_on_build_back_button_pressed"]
+[connection signal="request_save" from="BuildLayer/Build" to="." method="_on_build_request_save"]
 [connection signal="pressed" from="MenuLayer/Panel/BackButton" to="." method="_on_back_button_pressed"]
 [connection signal="pressed" from="MenuLayer/Panel/MatchButton" to="." method="_on_match_button_pressed"]
 [connection signal="pressed" from="MenuLayer/Panel/Deck/DeckSetLabel/DeckButton" to="." method="_on_deck_button_pressed"]
 [connection signal="pressed" from="MenuLayer/Message/MessageButton" to="." method="_on_message_button_pressed"]
-[connection signal="back_button_pressed" from="BuildLayer/Build" to="." method="_on_build_back_button_pressed"]
-[connection signal="request_save" from="BuildLayer/Build" to="." method="_on_build_request_save"]
-[connection signal="requested_return" from="Match" to="." method="_on_match_requested_return"]

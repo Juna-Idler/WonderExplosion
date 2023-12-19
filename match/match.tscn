@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://deuihfhsutpe0"]
+[gd_scene load_steps=10 format=3 uid="uid://deuihfhsutpe0"]
 
 [ext_resource type="Script" path="res://match/match.gd" id="1_dvvyw"]
 [ext_resource type="FontFile" uid="uid://dy0ca7iescwax" path="res://font/LightNovelPOPv2.otf" id="2_6yjbf"]
@@ -10,11 +10,6 @@
 [sub_resource type="LabelSettings" id="LabelSettings_0e2o3"]
 font_size = 40
 outline_size = 16
-outline_color = Color(0, 0, 0, 1)
-
-[sub_resource type="LabelSettings" id="LabelSettings_v0hy4"]
-font_size = 120
-outline_size = 20
 outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_y7hsw"]
@@ -31,7 +26,6 @@ center_offset = Vector3(0, -0.01, 0)
 script = ExtResource("1_dvvyw")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
-layer = 2
 
 [node name="Control" type="Control" parent="CanvasLayer"]
 layout_mode = 3
@@ -71,40 +65,6 @@ offset_bottom = 128.0
 text = "HP:20"
 label_settings = SubResource("LabelSettings_0e2o3")
 vertical_alignment = 1
-
-[node name="ResultMessage" type="Label" parent="CanvasLayer/Control"]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -11.5
-offset_right = 20.0
-offset_bottom = 11.5
-grow_horizontal = 2
-grow_vertical = 2
-text = "Game Over"
-label_settings = SubResource("LabelSettings_v0hy4")
-
-[node name="ReturnButton" type="Button" parent="CanvasLayer/Control"]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -256.0
-offset_top = -200.0
-offset_right = 256.0
-offset_bottom = -104.0
-grow_horizontal = 2
-grow_vertical = 0
-theme_override_font_sizes/font_size = 64
-text = "RETURN TITLE"
 
 [node name="MyName" type="Label" parent="CanvasLayer/Control"]
 unique_name_in_owner = true
@@ -177,6 +137,5 @@ text = "20"
 font_size = 120
 outline_size = 20
 
-[connection signal="pressed" from="CanvasLayer/Control/ReturnButton" to="." method="_on_return_button_pressed"]
 [connection signal="decided" from="Board/Player" to="." method="_on_player_decided"]
 [connection signal="selecting" from="Board/Player" to="." method="_on_player_selecting"]

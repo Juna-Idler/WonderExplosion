@@ -2,6 +2,13 @@ extends Node
 
 @onready var title_layer = $TitleLayer
 @onready var build_layer = $BuildLayer
+@onready var match_ui_layer = $MatchUILayer
+
+@onready var result_display = %ResultDisplay
+@onready var settings = %Settings
+
+
+@onready var result_message = %ResultMessage
 
 @onready var match_scene = $Match
 @onready var build = %Build
@@ -19,6 +26,12 @@ var offline_server := OfflineServer.new()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	match_ui_layer.hide()
+	result_display.hide()
+	build_layer.hide()
+	title_layer.show()
+	
+	
 	Global.settings.load()
 
 	server_url.text = Global.settings.online_url
@@ -44,12 +57,11 @@ func _on_button_pressed():
 			[player_deck.primary_color,player_deck.secondary_color],[Color.BLACK,Color.WHITE])
 	match_scene.set_process(true)
 	match_scene.initialize(offline_server)
+	match_ui_layer.show()
+	settings.hide()
+	result_display.hide()
 	title_layer.hide()
 
-
-func _on_match_requested_return():
-	match_scene.set_process(false)
-	title_layer.show()
 
 
 func _on_build_button_pressed():
@@ -86,4 +98,30 @@ func _on_player_name_text_changed(new_text):
 
 func _on_player_name_text_submitted(_new_text):
 	Global.settings.save()
+
+
+
+func _on_match_finished(player_life, rival_life):
+	var result := int(rival_life <= 0) - int(player_life <= 0)
+	if result > 0:
+		result_message.text = "YOU WIN"
+	elif result < 0:
+		result_message.text = "YOU LOSE"
+	else:
+		result_message.text = "DRAW"
+	result_display.hide()
+
+func _on_return_button_pressed():
+	match_ui_layer.hide()
+	match_scene.set_process(false)
+	title_layer.show()
+	
+
+
+func _on_settings_button_pressed():
+	settings.show()
+
+
+func _on_back_button_pressed():
+	settings.hide()
 
