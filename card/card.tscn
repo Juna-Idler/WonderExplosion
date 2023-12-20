@@ -1,6 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://doihe6s8ni0c7"]
+[gd_scene load_steps=8 format=3 uid="uid://doihe6s8ni0c7"]
 
-[ext_resource type="Script" path="res://match/card.gd" id="1_cesyu"]
+[ext_resource type="Script" path="res://card/card.gd" id="1_camgo"]
+[ext_resource type="Texture2D" uid="uid://c1fpgfv5viryg" path="res://card_images/全裏面_びっくりボンバー.jpg" id="2_q8qtt"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ybhtf"]
 size = Vector3(1, 0.01, 1)
@@ -12,22 +13,16 @@ shading_mode = 0
 [sub_resource type="PlaneMesh" id="PlaneMesh_1tp18"]
 size = Vector2(1, 1)
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_ropx7"]
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_t7vl5"]
-noise = SubResource("FastNoiseLite_ropx7")
-
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fnkq8"]
 resource_local_to_scene = true
 shading_mode = 0
-albedo_texture = SubResource("NoiseTexture2D_t7vl5")
+albedo_texture = ExtResource("2_q8qtt")
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_mt68h"]
-flip_faces = true
 size = Vector2(1, 1)
 
 [node name="Card" type="Area3D"]
-script = ExtResource("1_cesyu")
+script = ExtResource("1_camgo")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("BoxShape3D_ybhtf")
@@ -38,6 +33,7 @@ mesh = SubResource("PlaneMesh_1tp18")
 skeleton = NodePath("")
 
 [node name="BackSide" type="MeshInstance3D" parent="."]
+transform = Transform3D(-1, 8.74228e-08, 0, -8.74228e-08, -1, 0, 0, 0, 1, 0, 0, 0)
 material_override = SubResource("StandardMaterial3D_fnkq8")
 mesh = SubResource("PlaneMesh_mt68h")
 skeleton = NodePath("")

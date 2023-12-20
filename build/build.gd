@@ -76,7 +76,7 @@ func get_texture(id : int):
 		var data := Global.card_list.get_card_data(id)
 		var texture := CARD_TEXTURE.instantiate()
 		add_child(texture)
-		texture.initialize(data,Color.WHITE,null,false)
+		texture.initialize(data,Color.WHITE,0)
 		card_textures[id] = texture.get_texture()
 	return card_textures[id]
 

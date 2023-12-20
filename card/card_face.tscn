@@ -24,37 +24,23 @@ offset_right = 512.0
 offset_bottom = 512.0
 script = ExtResource("1_2tdc2")
 
-[node name="ColorRect" type="ColorRect" parent="."]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-color = Color(1, 0, 0, 1)
-
-[node name="MarginContainer" type="MarginContainer" parent="ColorRect"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_constants/margin_left = 16
-theme_override_constants/margin_top = 16
-theme_override_constants/margin_right = 16
-theme_override_constants/margin_bottom = 16
-
-[node name="TextureRect" type="TextureRect" parent="ColorRect/MarginContainer"]
+[node name="TextureRect" type="TextureRect" parent="."]
 unique_name_in_owner = true
 layout_mode = 2
+offset_right = 512.0
+offset_bottom = 512.0
 texture = SubResource("NoiseTexture2D_qjw38")
 expand_mode = 1
 stretch_mode = 4
 
-[node name="Leaks" type="Control" parent="ColorRect/MarginContainer/TextureRect"]
+[node name="Power" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+anchors_preset = 0
+offset_right = 512.0
+offset_bottom = 512.0
+
+[node name="Leaks" type="Control" parent="Power"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -63,7 +49,7 @@ grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(240, 240)
 
-[node name="Label1" type="Label" parent="ColorRect/MarginContainer/TextureRect/Leaks"]
+[node name="Label1" type="Label" parent="Power/Leaks"]
 unique_name_in_owner = true
 layout_mode = 2
 offset_right = 107.0
@@ -75,12 +61,16 @@ label_settings = SubResource("LabelSettings_gmlu3")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label2" type="Label" parent="ColorRect/MarginContainer/TextureRect/Leaks"]
+[node name="Label2" type="Label" parent="Power/Leaks"]
 unique_name_in_owner = true
-layout_mode = 2
-offset_left = 187.0
-offset_right = 294.0
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -53.5
+offset_right = 53.5
 offset_bottom = 107.0
+grow_horizontal = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "+0"
@@ -88,12 +78,15 @@ label_settings = SubResource("LabelSettings_gmlu3")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label3" type="Label" parent="ColorRect/MarginContainer/TextureRect/Leaks"]
+[node name="Label3" type="Label" parent="Power/Leaks"]
 unique_name_in_owner = true
-layout_mode = 2
-offset_left = 374.0
-offset_right = 480.0
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -106.0
 offset_bottom = 107.0
+grow_horizontal = 0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "+0"
@@ -101,12 +94,16 @@ label_settings = SubResource("LabelSettings_gmlu3")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label4" type="Label" parent="ColorRect/MarginContainer/TextureRect/Leaks"]
+[node name="Label4" type="Label" parent="Power/Leaks"]
 unique_name_in_owner = true
-layout_mode = 2
-offset_top = 187.0
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -53.5
 offset_right = 107.0
-offset_bottom = 294.0
+offset_bottom = 53.5
+grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "+0"
@@ -114,7 +111,7 @@ label_settings = SubResource("LabelSettings_gmlu3")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Blank" type="Label" parent="ColorRect/MarginContainer/TextureRect/Leaks"]
+[node name="Blank" type="Label" parent="Power/Leaks"]
 layout_mode = 2
 offset_left = 187.0
 offset_top = 187.0
@@ -125,13 +122,19 @@ size_flags_vertical = 3
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label5" type="Label" parent="ColorRect/MarginContainer/TextureRect/Leaks"]
+[node name="Label5" type="Label" parent="Power/Leaks"]
 unique_name_in_owner = true
-layout_mode = 2
-offset_left = 374.0
-offset_top = 187.0
-offset_right = 480.0
-offset_bottom = 294.0
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -106.0
+offset_top = -53.5
+offset_bottom = 53.5
+grow_horizontal = 0
+grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "+0"
@@ -139,12 +142,15 @@ label_settings = SubResource("LabelSettings_gmlu3")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label6" type="Label" parent="ColorRect/MarginContainer/TextureRect/Leaks"]
+[node name="Label6" type="Label" parent="Power/Leaks"]
 unique_name_in_owner = true
-layout_mode = 2
-offset_top = 374.0
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -106.0
 offset_right = 107.0
-offset_bottom = 480.0
+grow_vertical = 0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "+0"
@@ -152,13 +158,19 @@ label_settings = SubResource("LabelSettings_gmlu3")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label7" type="Label" parent="ColorRect/MarginContainer/TextureRect/Leaks"]
+[node name="Label7" type="Label" parent="Power/Leaks"]
 unique_name_in_owner = true
-layout_mode = 2
-offset_left = 187.0
-offset_top = 374.0
-offset_right = 294.0
-offset_bottom = 480.0
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -53.5
+offset_top = -106.0
+offset_right = 53.5
+grow_horizontal = 2
+grow_vertical = 0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "+0"
@@ -166,13 +178,18 @@ label_settings = SubResource("LabelSettings_gmlu3")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label8" type="Label" parent="ColorRect/MarginContainer/TextureRect/Leaks"]
+[node name="Label8" type="Label" parent="Power/Leaks"]
 unique_name_in_owner = true
-layout_mode = 2
-offset_left = 374.0
-offset_top = 374.0
-offset_right = 480.0
-offset_bottom = 480.0
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -106.0
+offset_top = -106.0
+grow_horizontal = 0
+grow_vertical = 0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "+0"
@@ -180,22 +197,22 @@ label_settings = SubResource("LabelSettings_gmlu3")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Control" type="Control" parent="ColorRect/MarginContainer/TextureRect"]
+[node name="Control" type="Control" parent="Power"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -152.0
-offset_top = -152.0
-offset_right = -24.0
-offset_bottom = -24.0
+offset_left = -64.0
+offset_top = -64.0
+offset_right = 64.0
+offset_bottom = 64.0
 grow_horizontal = 2
 grow_vertical = 2
 pivot_offset = Vector2(64, 64)
 
-[node name="Line2D" type="Line2D" parent="ColorRect/MarginContainer/TextureRect/Control"]
+[node name="Line2D" type="Line2D" parent="Power/Control"]
 position = Vector2(64, 64)
 scale = Vector2(1.25, 1.25)
 points = PackedVector2Array(0, -64, 64, 0, 0, 64, -64, 0, 0, -64)
@@ -205,7 +222,7 @@ end_cap_mode = 1
 antialiased = true
 metadata/_edit_lock_ = true
 
-[node name="Line2D2" type="Line2D" parent="ColorRect/MarginContainer/TextureRect/Control/Line2D"]
+[node name="Line2D2" type="Line2D" parent="Power/Control/Line2D"]
 points = PackedVector2Array(0, -64, 64, 0, 0, 64, -64, 0, 0, -64)
 default_color = Color(0, 0, 0, 1)
 begin_cap_mode = 1
@@ -213,7 +230,7 @@ end_cap_mode = 1
 antialiased = true
 metadata/_edit_lock_ = true
 
-[node name="LabelPower" type="Label" parent="ColorRect/MarginContainer/TextureRect/Control"]
+[node name="LabelPower" type="Label" parent="Power/Control"]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15

@@ -7,4 +7,10 @@
 render_target_update_mode = 1
 script = ExtResource("1_mffnr")
 
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_right = 512.0
+offset_bottom = 512.0
+
 [node name="CardFace" parent="." instance=ExtResource("2_t8d3s")]
+scale = Vector2(0.938, 0.938)
+pivot_offset = Vector2(256, 256)

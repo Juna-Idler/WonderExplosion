@@ -18,10 +18,10 @@ func _ready():
 	tween = create_tween()
 	tween.kill()
 
-func initialize(color : Color,opponent : bool):
+func initialize(back_texture : Texture2D,opponent : bool):
 	data = null
 	var material := $BackSide.material_override as StandardMaterial3D
-	material.albedo_color = color
+	material.albedo_texture = back_texture
 	label_3d.hide()
 	if opponent:
 		label_3d.rotation.y = -PI
@@ -31,7 +31,7 @@ func set_open_data(card_data : CardList.CardData,texture : Texture2D):
 	var material := $FrontSide.material_override as StandardMaterial3D
 	material.albedo_texture = texture
 
-const DISABLE_CARD_OVERLAY_MATERIAL = preload("res://match/disable_card_overlay_material.tres")
+const DISABLE_CARD_OVERLAY_MATERIAL = preload("res://card/disable_card_overlay_material.tres")
 func set_disable():
 	$FrontSide.material_overlay = DISABLE_CARD_OVERLAY_MATERIAL
 

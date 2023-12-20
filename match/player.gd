@@ -15,6 +15,7 @@ const CARD_WIDTH := 1.0
 @onready var cards : Array[Card] = [$Card1,$Card2,$Card3,$Card4,$Card5,$Card6]
 @onready var battle_point : Node3D = $BattlePoint
 @onready var raised_point : Node3D = $RaisedPoint
+@onready var back_texture : SubViewport = $BackTexture
 
 @export var audio_stream_player : AudioStreamPlayer
 
@@ -41,6 +42,10 @@ func initialize_unknown(p_name : String,color : Color,rival : NonPlayablePlayer,
 		remove_child(v)
 		v.queue_free()
 	card_textures.clear()
+	
+	const back_image = preload("res://card_images/全裏面_びっくりボンバー.jpg")
+	back_texture.initialize(color,back_image,32)
+	
 	player_name = p_name
 	player_color = color
 	life = 20
@@ -51,7 +56,7 @@ func initialize_unknown(p_name : String,color : Color,rival : NonPlayablePlayer,
 	opponent_layout = opponent
 	for i in cards.size():
 		var card := cards[i]
-		card.initialize(color,opponent)
+		card.initialize(back_texture.get_texture(),opponent)
 		card.position = stock_area.position
 		card.position.y = 0.01 * (i + 1)
 		card.rotation = Vector3(0,0,-PI)
@@ -208,7 +213,7 @@ func _set_card_texture(card : Card,card_id : int):
 	if not card_textures.has(card_id):
 		var ct := CardTextureScene.instantiate()
 		add_child(ct)
-		ct.initialize(data,player_color,null,opponent_layout)
+		ct.initialize(data,player_color,32)
 		card_textures[card_id] = ct
 	card.set_open_data(data,card_textures.get(card_id).get_texture())
 

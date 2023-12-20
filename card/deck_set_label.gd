@@ -11,7 +11,7 @@ var deck_set : Deck
 func initialize(deck : Deck):
 	deck_set = deck
 	for i in deck_set.cards.size():
-		faces[i].initialize(Global.card_list.get_card_data(deck_set.cards[i]),Color.WHITE,null,false)
+		faces[i].initialize(Global.card_list.get_card_data(deck_set.cards[i]))
 	label.text = deck_set.name
 	var texture := texture_rect.texture as GradientTexture2D
 	texture.gradient.colors[0] = deck_set.primary_color

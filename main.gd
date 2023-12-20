@@ -54,7 +54,8 @@ func _process(_delta):
 
 func _on_button_pressed():
 	offline_server.initialize(player_name,player_deck.cards,player_deck.cards,
-			[player_deck.primary_color,player_deck.secondary_color],[Color.BLACK,Color.WHITE])
+			[player_deck.primary_color,player_deck.secondary_color],
+			[player_deck.secondary_color,player_deck.primary_color])
 	match_scene.set_process(true)
 	match_scene.initialize(offline_server)
 	match_ui_layer.show()
