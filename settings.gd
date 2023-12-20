@@ -33,6 +33,6 @@ var deck : Deck :
 
 var online_url : String :
 	get:
-		return config.get_value("Online","Server URL","")
+		return config.get_value("Online","Server URL","wss://wonder-explosion.onrender.com")
 	set(v):
 		config.set_value("Online","Server URL",v)

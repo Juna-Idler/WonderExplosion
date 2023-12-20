@@ -57,12 +57,14 @@ func initialize(deck : Deck):
 	for c in deck_list.get_children():
 		deck_list.remove_child(c)
 		c.queue_free()
+	
 	deck_power_point = 0
 	for d in deck.cards:
 		deck_list.add_child(create_draggable_item(d))
 		deck_power_point += Global.card_list.get_card_data(d).power
 	deck_power.text = DECK_POWER_TEXT % deck_power_point
 
+	deck_name.text = deck.name
 	primary_color_button.color = deck.primary_color
 	secondary_color_button.color = deck.secondary_color
 	primary_color = deck.primary_color

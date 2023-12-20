@@ -127,7 +127,6 @@ unique_name_in_owner = true
 
 [node name="TitleLayer" type="CanvasLayer" parent="."]
 layer = 10
-visible = false
 
 [node name="Panel" type="Panel" parent="TitleLayer"]
 anchors_preset = 15
