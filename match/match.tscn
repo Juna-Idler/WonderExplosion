@@ -141,6 +141,7 @@ font_size = 120
 outline_size = 20
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+bus = &"SE"
 
 [connection signal="decided" from="Board/Player" to="." method="_on_player_decided"]
 [connection signal="selecting" from="Board/Player" to="." method="_on_player_selecting"]

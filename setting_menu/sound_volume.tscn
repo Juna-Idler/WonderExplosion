@@ -1,0 +1,153 @@
+[gd_scene load_steps=9 format=3 uid="uid://6kkjprn24uee"]
+
+[ext_resource type="Script" path="res://setting_menu/sound_volume.gd" id="1_rq0iw"]
+
+[sub_resource type="Gradient" id="Gradient_cbof8"]
+offsets = PackedFloat32Array(0)
+colors = PackedColorArray(1, 1, 1, 0.752941)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_txykl"]
+gradient = SubResource("Gradient_cbof8")
+width = 2
+height = 24
+
+[sub_resource type="Gradient" id="Gradient_k3ear"]
+offsets = PackedFloat32Array(0.471861)
+colors = PackedColorArray(1, 1, 1, 0.501961)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_pvvud"]
+gradient = SubResource("Gradient_k3ear")
+width = 2
+height = 24
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2roji"]
+bg_color = Color(1, 1, 1, 0.752941)
+border_width_top = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_klv8w"]
+content_margin_top = 12.0
+content_margin_bottom = 12.0
+bg_color = Color(0, 0, 0, 0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+expand_margin_left = 2.0
+expand_margin_top = 2.0
+expand_margin_bottom = 2.0
+
+[sub_resource type="Theme" id="Theme_vhwbn"]
+HSlider/icons/grabber = SubResource("GradientTexture2D_txykl")
+HSlider/icons/grabber_highlight = SubResource("GradientTexture2D_txykl")
+HSlider/icons/tick = SubResource("GradientTexture2D_pvvud")
+HSlider/styles/grabber_area = SubResource("StyleBoxFlat_2roji")
+HSlider/styles/grabber_area_highlight = SubResource("StyleBoxFlat_2roji")
+HSlider/styles/slider = SubResource("StyleBoxFlat_klv8w")
+
+[node name="SoundVolume" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 192.0
+offset_top = 128.0
+offset_right = 1088.0
+offset_bottom = 384.0
+theme = SubResource("Theme_vhwbn")
+script = ExtResource("1_rq0iw")
+
+[node name="HSliderMaster" type="HSlider" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+offset_left = 192.0
+offset_top = 32.0
+offset_right = 832.0
+offset_bottom = 96.0
+max_value = 1.0
+step = 0.01
+value = 1.0
+tick_count = 11
+
+[node name="CheckButtonMaster" type="CheckButton" parent="HSliderMaster"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = -130.0
+offset_top = -32.0
+offset_right = -2.0
+offset_bottom = 32.0
+grow_horizontal = 0
+grow_vertical = 2
+button_pressed = true
+text = "MASTER"
+alignment = 2
+
+[node name="HSliderBGM" type="HSlider" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+offset_left = 192.0
+offset_top = 96.0
+offset_right = 832.0
+offset_bottom = 160.0
+max_value = 1.0
+step = 0.01
+value = 0.5
+tick_count = 11
+
+[node name="CheckButtonBGM" type="CheckButton" parent="HSliderBGM"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = -130.0
+offset_top = -32.0
+offset_right = -2.0
+offset_bottom = 32.0
+grow_horizontal = 0
+grow_vertical = 2
+button_pressed = true
+text = "BGM"
+alignment = 2
+
+[node name="HSliderSE" type="HSlider" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+offset_left = 192.0
+offset_top = 160.0
+offset_right = 832.0
+offset_bottom = 224.0
+max_value = 1.0
+step = 0.01
+value = 0.5
+tick_count = 11
+
+[node name="CheckButtonSE" type="CheckButton" parent="HSliderSE"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = -130.0
+offset_top = -32.0
+offset_right = -2.0
+offset_bottom = 32.0
+grow_horizontal = 0
+grow_vertical = 2
+button_pressed = true
+text = "SE"
+alignment = 2
+
+[connection signal="value_changed" from="HSliderMaster" to="." method="_on_h_slider_master_value_changed"]
+[connection signal="toggled" from="HSliderMaster/CheckButtonMaster" to="." method="_on_check_button_master_toggled"]
+[connection signal="value_changed" from="HSliderBGM" to="." method="_on_h_slider_bgm_value_changed"]
+[connection signal="toggled" from="HSliderBGM/CheckButtonBGM" to="." method="_on_check_button_bgm_toggled"]
+[connection signal="value_changed" from="HSliderSE" to="." method="_on_h_slider_se_value_changed"]
+[connection signal="toggled" from="HSliderSE/CheckButtonSE" to="." method="_on_check_button_se_toggled"]

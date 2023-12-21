@@ -4,6 +4,8 @@ extends Node
 @onready var build_layer = $BuildLayer
 @onready var match_ui_layer = $MatchUILayer
 
+@onready var title_settings = $TitleLayer/TitleSettings
+
 @onready var result_display = %ResultDisplay
 @onready var settings = %Settings
 
@@ -16,7 +18,7 @@ extends Node
 
 @onready var player_name_edit = %PlayerName
 
-@onready var server_url = %ServerURL
+@onready var server_option_button : OptionButton = %ServerOptionButton
 
 
 var player_name : String = "no name"
@@ -34,7 +36,9 @@ func _ready():
 	
 	Global.settings.load()
 
-	server_url.text = Global.settings.online_url
+	for s in Global.settings.server_list:
+		server_option_button.add_item(s)
+	server_option_button.select(0)
 	
 	player_deck = Global.settings.deck
 	player_name = Global.settings.player_name
@@ -43,7 +47,9 @@ func _ready():
 	deck_set_label.initialize(player_deck)
 	match_scene.set_process(false)
 	build.set_process(false)
-	pass # Replace with function body.
+	
+	Global.settings.initialize_sound_config()
+
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -88,7 +94,11 @@ func _on_build_request_save(deck):
 
 
 func _on_online_button_pressed():
-	Global.settings.online_url = server_url.text
+	var selected = server_option_button.selected
+	if selected < 0:
+		return
+	server_option_button.get_item_text(selected)
+	Global.settings.online_url = server_option_button.get_item_text(selected)
 	Global.settings.save()
 	get_tree().change_scene_to_file("res://online/main.tscn")
 
@@ -130,4 +140,20 @@ func _on_settings_button_pressed():
 
 func _on_back_button_pressed():
 	settings.hide()
+
+
+
+func _on_title_settings_button_pressed():
+	title_settings.initialize()
+	title_settings.show()
+
+func _on_title_settings_back_button_pressed():
+	title_settings.hide()
+
+func _on_title_settings_server_list_changed():
+	server_option_button.clear()
+	for s in Global.settings.server_list:
+		server_option_button.add_item(s)
+	server_option_button.select(0)
+	
 
