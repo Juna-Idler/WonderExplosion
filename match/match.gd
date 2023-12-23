@@ -27,6 +27,8 @@ var game_end_result : int
 @onready var my_name : Label = %MyName
 @onready var rival_name : Label = %RivalName
 
+@onready var turn_display = $Board/TurnDisplay
+
 @onready var conflict_effect = $Board/ConflictEffect
 
 @onready var camera_3d = $Board/Camera3D
@@ -69,18 +71,22 @@ func initialize(server : IGameServer):
 	player_number = first_data.player_number
 	field.initialize(client_player,player_number == 1)
 	
+	turn_display.initialize()
 	if player_number == 1:
+		turn_display.move_to_client(1,false)
 		for i in first_data.my_hand:
 			var _card := await client_player._draw_async(i)
 		for i in first_data.rival_hand_count:
 			var _card := await rival._draw_async()
 		client_player.playable = true
 	else:
+		turn_display.move_to_rival(1,false)
 		for i in first_data.rival_hand_count:
 			var _card := await rival._draw_async()
 		for i in first_data.my_hand:
 			var _card := await client_player._draw_async(i)
 		var result = await game_server._wait_async()
+		await turn_display.wait_finished()
 		await perform_result(result,rival)
 		if game_end:
 			finished.emit(client_player.life,rival.life)
@@ -230,14 +236,18 @@ func perform_result(result : IGameServer.Result, player : NonPlayablePlayer):
 		game_end = true
 		return
 	else:
+		var ex := result.explosion and not (result.explosion.other and result.explosion.power == result.explosion.other.power)
+		var battle_draw := (result.battle and result.battle.result == 0)
 		if result.next_player != player_number:
+			turn_display.move_to_rival(result.turn_count + (0 if (ex or battle_draw) else 1),ex)
 			for c in result.draw_cards:
 				await rival._draw_async(c)
 			var wait_result = await game_server._wait_async()
+			await turn_display.wait_finished()
 			await perform_result(wait_result,rival)
 		else:
-			if (result.battle and result.battle.result == 0) or\
-					(result.explosion and not (result.explosion.other and result.explosion.power == result.explosion.other.power)):
+			turn_display.move_to_client(result.turn_count + (0 if (ex or battle_draw) else 1),ex)
+			if battle_draw or ex:
 				client_player.open_play = true
 			else:
 				client_player.open_play = false
