@@ -33,6 +33,7 @@ func initialize(p_name : String,deck : Array[int],color : Color,rival : NonPlaya
 
 
 func _ready():
+	super()
 	for c in cards:
 		c.input_event.connect(_on_card_input_event.bind(c))
 	pass # Replace with function body.

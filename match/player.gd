@@ -4,6 +4,9 @@ class_name NonPlayablePlayer
 
 signal life_changed(life : int)
 
+signal card_mouse_entered(card : Card)
+signal card_mouse_exited(card : Card)
+
 const CardTextureScene = preload("res://card/card_texture.tscn")
 
 const HANDAREA_SIZE := Vector2(4.0,1.1)
@@ -36,6 +39,18 @@ var life : int :
 var rival_player : NonPlayablePlayer
 
 var opponent_layout : bool
+
+func _ready():
+	for c in cards:
+		c.mouse_entered.connect(on_card_mouse_entered.bind(c))
+		c.mouse_exited.connect(on_card_mouse_exited.bind(c))
+
+func on_card_mouse_entered(card : Card):
+	card_mouse_entered.emit(card)
+
+func on_card_mouse_exited(card : Card):
+	card_mouse_exited.emit(card)
+	
 
 func initialize_unknown(p_name : String,color : Color,rival : NonPlayablePlayer,opponent : bool):
 	for v in card_textures.values():
@@ -169,7 +184,8 @@ func _discard_async(card : Card):
 	discard.append(card)
 	audio_stream_player.stream = preload("res://sounds/パフ.mp3")
 	var tween := create_tween().set_parallel()
-	var pos := Vector3(discard_area.position.x,discard_area.position.y + discard.size() * 0.01,discard_area.position.z)
+	var size := discard.size()
+	var pos := Vector3(discard_area.position.x - 0.6 + size * 0.3,discard_area.position.y + size * 0.01,discard_area.position.z)
 	tween.tween_property(card,"position",pos,0.5)
 	tween.tween_property(card,"rotation:z",0,0.5)
 	tween.tween_callback(audio_stream_player.play)

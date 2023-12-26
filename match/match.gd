@@ -13,6 +13,7 @@ var game_server : IGameServer
 
 var player_number := 0
 
+var performing : bool = false
 
 var game_end := true
 var game_end_result : int
@@ -26,6 +27,8 @@ var game_end_result : int
 @onready var rival_hp : Label = %RivalHP
 @onready var my_name : Label = %MyName
 @onready var rival_name : Label = %RivalName
+@onready var large_image : TextureRect = %LargeImage
+
 
 @onready var turn_display = $Board/TurnDisplay
 
@@ -116,6 +119,7 @@ func play(point_x : int,point_y : int):
 
 
 func perform_result(result : IGameServer.Result, player : NonPlayablePlayer):
+	performing = true
 	var play_square := field.get_square(result.position)
 	if result.battle:
 		var card := await player._play_battle_async(play_square.global_position,result.play_card)
@@ -238,21 +242,25 @@ func perform_result(result : IGameServer.Result, player : NonPlayablePlayer):
 	else:
 		var ex := result.explosion and not (result.explosion.other and result.explosion.power == result.explosion.other.power)
 		var battle_draw := (result.battle and result.battle.result == 0)
+		var next_turn := result.turn_count + (0 if (ex or battle_draw) else 1)
 		if result.next_player != player_number:
-			turn_display.move_to_rival(result.turn_count + (0 if (ex or battle_draw) else 1),ex)
+			turn_display.move_to_rival(next_turn,ex)
 			for c in result.draw_cards:
 				await rival._draw_async(c)
+			performing = false
 			var wait_result = await game_server._wait_async()
 			await turn_display.wait_finished()
 			await perform_result(wait_result,rival)
 		else:
-			turn_display.move_to_client(result.turn_count + (0 if (ex or battle_draw) else 1),ex)
+			turn_display.move_to_client(next_turn,ex)
 			if battle_draw or ex:
 				client_player.open_play = true
 			else:
 				client_player.open_play = false
 			for c in result.draw_cards:
 				await client_player._draw_async(c)
+
+	performing = false
 
 
 func perform_battle_effect(play_card : Card,square_card : Card,result : int,front_play : bool):
@@ -365,7 +373,7 @@ func perform_cross_explosion_effect(positions : Array[int],o_positions : Array[i
 			await conflict_effect.play_lose()
 	explosion_power.hide()
 	explosion_power_2.hide()
-
+	
 
 var last_selecting : int = -1
 
@@ -400,3 +408,24 @@ func _on_player_decided(hit_position):
 		play(point_x,point_y)
 		last_selecting = -1
 
+
+
+func _on_player_card_mouse_entered(card : Card):
+	if not client_player.stock.has(card) and card.data and not performing:
+		var card_texture : CardTexture = client_player.card_textures.get(card.data.id)
+		large_image.texture = card_texture.get_texture()
+		large_image.show()
+	pass # Replace with function body.
+
+func _on_player_card_mouse_exited(_card):
+	large_image.hide()
+
+func _on_rival_card_mouse_entered(card):
+	if card.data and not performing:
+		var card_texture : CardTexture = rival.card_textures.get(card.data.id)
+		large_image.texture = card_texture.get_texture()
+		large_image.show()
+	pass # Replace with function body.
+
+func _on_rival_card_mouse_exited(_card):
+	large_image.hide()

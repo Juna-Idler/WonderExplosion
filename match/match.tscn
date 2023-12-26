@@ -95,6 +95,20 @@ text = "名前"
 label_settings = SubResource("LabelSettings_y7hsw")
 vertical_alignment = 1
 
+[node name="LargeImage" type="TextureRect" parent="CanvasLayer/Control"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = -344.0
+offset_right = 344.0
+offset_bottom = -8.0
+grow_vertical = 0
+expand_mode = 1
+stretch_mode = 4
+
 [node name="Board" type="Node3D" parent="."]
 
 [node name="Camera3D" type="Camera3D" parent="Board"]
@@ -146,5 +160,9 @@ outline_size = 20
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 bus = &"SE"
 
+[connection signal="card_mouse_entered" from="Board/Player" to="." method="_on_player_card_mouse_entered"]
+[connection signal="card_mouse_exited" from="Board/Player" to="." method="_on_player_card_mouse_exited"]
 [connection signal="decided" from="Board/Player" to="." method="_on_player_decided"]
 [connection signal="selecting" from="Board/Player" to="." method="_on_player_selecting"]
+[connection signal="card_mouse_entered" from="Board/Rival" to="." method="_on_rival_card_mouse_entered"]
+[connection signal="card_mouse_exited" from="Board/Rival" to="." method="_on_rival_card_mouse_exited"]

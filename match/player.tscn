@@ -23,6 +23,7 @@ mesh = SubResource("PlaneMesh_in685")
 
 [node name="DiscardArea" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.75, 0, 1)
+visible = false
 mesh = SubResource("PlaneMesh_in685")
 
 [node name="Card1" parent="." instance=ExtResource("2_kkirn")]
