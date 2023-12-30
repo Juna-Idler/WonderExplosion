@@ -25,8 +25,8 @@ func set_leaks(leaks : PackedInt32Array) -> bool:
 
 func play(play_global_position : Vector3,duration : float = 0.5):
 	global_position = play_global_position
-	show()
 	animation_player.stop()
+	show()
 	animation_player.speed_scale = 0.5 / duration
 	animation_player.play("gather")
 	await animation_player.animation_finished

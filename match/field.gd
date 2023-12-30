@@ -78,9 +78,10 @@ func play_leak_effect_async(index : int):
 	if leak_effect.set_leaks(leaks):
 		audio_stream_player.stream = preload("res://sounds/ステータス上昇魔法2.mp3")
 		audio_stream_player.play()
-		await leak_effect.play(card.global_position,0.75)
+		await leak_effect.play(card.global_position,0.65)
 		var total : int = 0
 		for i in leaks:
 			total += i
 		card.show_power(total)
+		await get_tree().create_timer(0.1).timeout
 
